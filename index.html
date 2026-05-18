@@ -1,0 +1,2658 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iMersKORLAS - Digital Parent Community Platform</title>
+    
+    <!-- CSS Dependencies -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- JS Helper Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                            950: '#082f49',
+                        },
+                        darkBg: '#0b1329',
+                        darkCard: '#1c2541',
+                        accentGreen: '#10b981',
+                        accentOrange: '#f59e0b'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b1329;
+            color: #f1f5f9;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b1329;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1c2541;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3b82f6;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased">
+
+    <!-- AUTH SCREEN (LOGIN) -->
+    <div id="authScreen" class="flex-grow flex items-center justify-center p-4 relative overflow-hidden bg-slate-950">
+        <!-- Background Orbs -->
+        <div class="absolute w-96 h-96 rounded-full bg-primary-600/10 blur-3xl -top-10 -left-10"></div>
+        <div class="absolute w-96 h-96 rounded-full bg-cyan-500/10 blur-3xl -bottom-10 -right-10"></div>
+        
+        <div class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl p-8 z-10">
+            <div class="text-center mb-8">
+                <div class="inline-flex p-3 rounded-2xl bg-primary-600/20 text-primary-500 mb-4 ring-1 ring-primary-500/30">
+                    <i id="loginLogoIcon" class="fa-solid fa-people-roof text-3xl"></i>
+                </div>
+                <h1 id="loginAppName" class="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-primary-400 to-cyan-400 bg-clip-text text-transparent">iMersKORLAS</h1>
+                <p id="loginTagline" class="text-sm text-slate-400 mt-1">Connected. Organized. Transparent.</p>
+                <div id="loginSubheadline" class="inline-block mt-3 px-3 py-1 bg-slate-800 border border-slate-700 rounded-full text-xs text-slate-300 font-semibold uppercase tracking-wider">
+                    Digital Parent Community Platform
+                </div>
+            </div>
+
+            <form id="loginForm" class="space-y-6">
+                <!-- Phone Number -->
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-2">No. Handphone (WhatsApp)</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">
+                            <i class="fa-solid fa-phone"></i>
+                        </span>
+                        <input type="tel" id="loginPhone" required placeholder="Contoh: 08123456789" 
+                            class="w-full pl-10 pr-4 py-3 bg-slate-950 border border-slate-800 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition text-slate-100 placeholder-slate-600">
+                    </div>
+                </div>
+
+                <!-- 6 Digit PIN -->
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-2">6-Digit PIN Akses</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">
+                            <i class="fa-solid fa-key"></i>
+                        </span>
+                        <input type="password" id="loginPin" required maxlength="6" pattern="[0-9]{6}" placeholder="••••••" 
+                            class="w-full pl-10 pr-4 py-3 bg-slate-950 border border-slate-800 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition text-center tracking-widest text-xl text-slate-100 placeholder-slate-700">
+                    </div>
+                    <div class="flex justify-between items-center mt-2">
+                        <button type="button" onclick="openForgotPinModal()" class="text-xs text-primary-400 hover:text-primary-300 transition underline font-medium">
+                            Lupa PIN?
+                        </button>
+                        <button type="button" onclick="showQuickAccessDemo()" class="text-xs text-cyan-400 hover:text-cyan-300 transition underline font-medium">
+                            Login Instan (Demo)
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full py-3 px-4 bg-gradient-to-r from-primary-600 to-cyan-600 hover:from-primary-500 hover:to-cyan-500 text-white font-semibold rounded-2xl transition shadow-lg shadow-primary-950/50 flex justify-center items-center gap-2">
+                    <span>Masuk ke Dashboard</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+
+            <div class="mt-8 pt-6 border-t border-slate-800 text-center flex flex-col gap-1">
+                <span class="text-xs text-slate-500">Hubungi Admin Komite Sekolah jika belum terdaftar.</span>
+                <span class="text-[10px] text-slate-600">PIN bawaan semua akun demo: 123456</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN INTERACTIVE APP (HIDDEN ON START) -->
+    <div id="mainDashboard" class="hidden flex-grow flex flex-col lg:flex-row bg-slate-950">
+        
+        <!-- SIDEBAR -->
+        <aside class="w-full lg:w-64 bg-slate-900 border-b lg:border-b-0 lg:border-r border-slate-800 flex flex-col">
+            <!-- Sidebar Header / Profile -->
+            <div class="p-6 border-b border-slate-800">
+                <div class="flex items-center gap-3">
+                    <div id="sidebarLogoContainer" class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-cyan-500 flex items-center justify-center font-bold text-white shadow">
+                        <i id="sidebarLogoIcon" class="fa-solid fa-people-roof text-lg"></i>
+                    </div>
+                    <div>
+                        <h2 id="sidebarAppName" class="font-extrabold text-slate-200 tracking-tight text-md">iMersKORLAS</h2>
+                        <span class="text-[10px] text-accentGreen uppercase font-bold tracking-widest">Live Active</span>
+                    </div>
+                </div>
+                
+                <!-- Quick User Profile Info -->
+                <div class="mt-6 p-3 rounded-2xl bg-slate-950/60 border border-slate-800/80">
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-2.5 overflow-hidden">
+                            <div id="userAvatar" class="w-9 h-9 flex-shrink-0 rounded-full bg-slate-800 flex items-center justify-center text-slate-300 font-semibold text-xs border border-primary-500/20">
+                                U
+                            </div>
+                            <div class="overflow-hidden">
+                                <p id="userName" class="text-xs font-semibold text-slate-200 truncate">Nama User</p>
+                                <span id="userRoleBadge" class="text-[9px] px-2 py-0.5 rounded-full bg-primary-950/60 text-primary-400 font-bold border border-primary-500/20 block w-max uppercase tracking-wider mt-0.5">ROLE</span>
+                            </div>
+                        </div>
+                        <button onclick="openChangePinModal()" title="Ganti PIN Keamanan" class="flex-shrink-0 p-1.5 rounded-lg bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-400 hover:text-slate-100 transition">
+                            <i class="fa-solid fa-key text-xs text-amber-500"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar Nav Links -->
+            <nav class="flex-grow p-4 space-y-1 overflow-y-auto">
+                <button onclick="switchTab('dashboard')" class="tab-link active w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-slate-100 hover:bg-slate-800/50 transition font-medium text-sm text-left">
+                    <i class="fa-solid fa-chart-pie text-lg text-primary-500"></i>
+                    <span>Dashboard Utama</span>
+                </button>
+                <button onclick="switchTab('financial')" class="tab-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-slate-100 hover:bg-slate-800/50 transition font-medium text-sm text-left">
+                    <i class="fa-solid fa-wallet text-lg text-emerald-500"></i>
+                    <span>Sistem Iuran & Kas</span>
+                </button>
+                <button onclick="switchTab('announcements')" class="tab-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-slate-100 hover:bg-slate-800/50 transition font-medium text-sm text-left">
+                    <i class="fa-solid fa-bullhorn text-lg text-purple-500"></i>
+                    <span>Pengumuman</span>
+                </button>
+                <button onclick="switchTab('events')" class="tab-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-slate-100 hover:bg-slate-800/50 transition font-medium text-sm text-left">
+                    <i class="fa-solid fa-calendar-days text-lg text-red-500"></i>
+                    <span>Event & Jadwal</span>
+                </button>
+                <button onclick="switchTab('documents')" class="tab-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-slate-100 hover:bg-slate-800/50 transition font-medium text-sm text-left">
+                    <i class="fa-solid fa-images text-lg text-cyan-500"></i>
+                    <span>Galeri & Dokumentasi</span>
+                </button>
+                <button onclick="switchTab('polling')" class="tab-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-slate-100 hover:bg-slate-800/50 transition font-medium text-sm text-left">
+                    <i class="fa-solid fa-square-poll-horizontal text-lg text-amber-500"></i>
+                    <span>Polling & Voting</span>
+                </button>
+                <button onclick="switchTab('permissions')" class="tab-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-slate-100 hover:bg-slate-800/50 transition font-medium text-sm text-left">
+                    <i class="fa-solid fa-file-signature text-lg text-pink-500"></i>
+                    <span>Sistem Izin Anak</span>
+                </button>
+                
+                <!-- DYNAMIC SECURE TABS -->
+                <button id="sidebarTabClasses" onclick="switchTab('classes')" class="tab-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-slate-100 hover:bg-slate-800/50 transition font-medium text-sm text-left">
+                    <i class="fa-solid fa-school text-lg text-cyan-400"></i>
+                    <span>Kelola Kelas</span>
+                </button>
+                <button id="sidebarTabUsers" onclick="switchTab('users')" class="tab-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-slate-100 hover:bg-slate-800/50 transition font-medium text-sm text-left">
+                    <i class="fa-solid fa-users-gear text-lg text-emerald-400"></i>
+                    <span>Kelola Pengguna</span>
+                </button>
+                <button onclick="switchTab('integration')" class="tab-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-slate-100 hover:bg-slate-800/50 transition font-medium text-sm text-left border border-slate-800/50 bg-slate-950/20">
+                    <i class="fa-solid fa-circle-nodes text-lg text-indigo-400"></i>
+                    <span class="text-slate-300">Integrasi GAS API</span>
+                </button>
+            </nav>
+
+            <!-- Sidebar Footer -->
+            <div class="p-4 border-t border-slate-800 bg-slate-900/50">
+                <div class="mb-3">
+                    <label class="block text-[10px] uppercase font-bold text-slate-500 mb-1.5 tracking-wider">Demo Switch Role</label>
+                    <select onchange="changeRoleDemo(this.value)" id="demoRoleSelector" class="w-full text-xs bg-slate-950 border border-slate-800 text-slate-300 rounded-lg p-2 focus:ring-1 focus:ring-primary-500 outline-none">
+                        <option value="SUPER ADMIN">Super Admin</option>
+                        <option value="KOMITE">Komite</option>
+                        <option value="KORLAS">Korlas Kelas 1-A</option>
+                        <option value="WALI MURID" selected>Wali Murid</option>
+                    </select>
+                </div>
+                <button onclick="logout()" class="w-full py-2.5 px-3 bg-red-950/40 hover:bg-red-900/40 border border-red-900/50 text-red-400 hover:text-red-300 font-semibold rounded-xl text-xs transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-power-off"></i>
+                    <span>Log Out</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- MAIN VIEWPORT -->
+        <main class="flex-grow flex flex-col p-4 lg:p-8 overflow-y-auto max-h-screen lg:max-h-none">
+            <!-- TOP BAR STATUS -->
+            <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+                <div>
+                    <h1 id="tabTitle" class="text-2xl lg:text-3xl font-bold text-slate-100">Dashboard Utama</h1>
+                    <p id="tabSubtitle" class="text-xs text-slate-400 mt-1">Status dan ringkasan aktivitas saat ini.</p>
+                </div>
+                
+                <div class="flex flex-wrap items-center gap-3">
+                    <button onclick="openChangePinModal()" class="px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 text-amber-400 flex items-center gap-2 text-xs transition">
+                        <i class="fa-solid fa-key animate-pulse"></i>
+                        <span class="font-semibold">Ganti PIN</span>
+                    </button>
+                    <div class="px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 flex items-center gap-2 text-xs">
+                        <span class="w-2.5 h-2.5 rounded-full bg-indigo-500 animate-pulse"></span>
+                        <span class="text-slate-300 font-medium">Sekolah: <span id="topBarSchoolName" class="text-primary-400">SD Harapan Bangsa</span></span>
+                    </div>
+                    <div id="classContextBadge" class="px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 flex items-center gap-2 text-xs">
+                        <i class="fa-solid fa-users text-cyan-400"></i>
+                        <span class="text-slate-300 font-medium">Kelas: <span id="userClassName" class="text-cyan-400">Kelas 1-A</span></span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- TAB CONTENT CONTAINER -->
+            <div id="tabContent">
+
+                <!-- 1. DASHBOARD VIEW -->
+                <div id="view_dashboard" class="tab-pane space-y-8">
+                    
+                    <!-- WELCOME BANNER WITH DYNAMIC GREETING & ROTATING QUOTES -->
+                    <div class="bg-gradient-to-r from-slate-900 via-primary-950/20 to-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden">
+                        <div class="absolute -right-10 -top-10 w-40 h-40 rounded-full bg-primary-500/5 blur-2xl"></div>
+                        <div class="space-y-2 z-10">
+                            <div class="flex items-center gap-2.5">
+                                <span id="greetingIcon" class="text-2xl">☀️</span>
+                                <h2 class="text-xl md:text-2xl font-extrabold text-slate-100">
+                                    <span id="timeGreeting">Selamat Pagi</span>, <span id="greetingUserName" class="text-primary-400">Nama User</span>!
+                                </h2>
+                            </div>
+                            <p id="timeQuote" class="text-xs md:text-sm text-slate-400 font-medium italic leading-relaxed max-w-2xl">
+                                "Pagi yang cerah untuk masa depan cerah anak-anak kita. Selamat beraktivitas, Bunda & Ayah!"
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- METRIC CARDS -->
+                    <div id="dashboardMetrics" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <!-- Dynamic generated cards -->
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
+                            <div class="flex items-center justify-between mb-6">
+                                <div>
+                                    <h3 class="text-lg font-semibold text-slate-200">Arus Kas Keuangan</h3>
+                                    <p class="text-xs text-slate-500">Transparansi kas komunitas semester ini</p>
+                                </div>
+                                <span class="text-xs px-2.5 py-1 bg-slate-800 rounded-lg text-primary-400 border border-slate-700 font-medium">Update Hari Ini</span>
+                            </div>
+                            <div class="relative h-64 md:h-80">
+                                <canvas id="cashflowChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex flex-col justify-between">
+                            <div>
+                                <h3 class="text-lg font-semibold text-slate-200 mb-4">Pengumuman Disematkan</h3>
+                                <div id="pinnedAnnouncementBox" class="space-y-4">
+                                    <!-- Dynamic announcement pin -->
+                                </div>
+                            </div>
+                            <div class="mt-6 pt-6 border-t border-slate-800">
+                                <h4 class="text-sm font-semibold text-slate-300 mb-3">Agenda Terdekat</h4>
+                                <div id="upcomingEventCompact" class="flex gap-4 p-3 rounded-2xl bg-slate-950/60 border border-slate-800">
+                                    <div class="flex-shrink-0 w-12 h-12 bg-rose-500/20 text-rose-400 border border-rose-500/30 rounded-xl flex flex-col items-center justify-center font-bold">
+                                        <span class="text-xs">22</span>
+                                        <span class="text-[9px] uppercase">Mei</span>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-xs font-bold text-slate-200">Rapat Koordinasi Komite Sekolah</h5>
+                                        <p class="text-[10px] text-slate-500 mt-0.5">Ruang Rapat Utama, 09:00 WIB</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="roleContextualSection" class="bg-gradient-to-r from-slate-900 to-slate-800 border border-slate-700/60 rounded-3xl p-6 shadow-xl">
+                        <!-- Dynamic content -->
+                    </div>
+                </div>
+
+                <!-- 2. FINANCIAL VIEW -->
+                <div id="view_financial" class="tab-pane hidden space-y-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="bg-gradient-to-br from-emerald-600 to-teal-800 rounded-3xl p-6 text-white shadow-xl relative overflow-hidden">
+                            <div class="absolute right-4 bottom-4 text-emerald-500/20 text-9xl font-black">Rp</div>
+                            <div class="relative z-10 flex flex-col justify-between h-full">
+                                <div>
+                                    <p class="text-xs text-emerald-100 uppercase tracking-wider font-semibold">Total Saldo Kas Kelas Anda</p>
+                                    <h3 id="financialBalance" class="text-3xl font-extrabold mt-1">Rp 4.750.000</h3>
+                                </div>
+                                <div class="mt-8 flex gap-2">
+                                    <span class="text-xs bg-white/15 px-3 py-1 rounded-full border border-white/10">Audit Terverifikasi</span>
+                                    <span class="text-xs bg-emerald-500 px-3 py-1 rounded-full font-bold">Sehat</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-3xl p-6 flex flex-col justify-center">
+                            <h4 class="text-md font-bold text-slate-200 mb-3">Aksi Cepat Keuangan</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <button onclick="openPaymentProofModal()" id="btnBayarIuran" class="p-4 bg-slate-950 hover:bg-slate-800/80 border border-slate-800 rounded-2xl text-left transition flex items-center gap-4">
+                                    <div class="w-12 h-12 rounded-xl bg-primary-600/20 text-primary-400 flex items-center justify-center text-lg">
+                                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-xs font-bold text-slate-200">Konfirmasi Iuran Masuk</h5>
+                                        <p class="text-[10px] text-slate-500 mt-0.5">Upload bukti transfer bank / kas</p>
+                                    </div>
+                                </button>
+                                
+                                <button onclick="openAddTransactionModal()" id="btnTambahTransaksiAdmin" class="p-4 bg-slate-950 hover:bg-slate-800/80 border border-slate-800 rounded-2xl text-left transition flex items-center gap-4">
+                                    <div class="w-12 h-12 rounded-xl bg-emerald-600/20 text-emerald-400 flex items-center justify-center text-lg">
+                                        <i class="fa-solid fa-plus-minus"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-xs font-bold text-slate-200">Input Mutasi Kas</h5>
+                                        <p class="text-[10px] text-slate-500 mt-0.5">Catat pengeluaran atau uang masuk</p>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- REPORT GENERATION CARD (SECURED FOR COMM/KORLAS ADMINS) -->
+                    <div id="adminReportGeneratorSection" class="hidden bg-gradient-to-r from-slate-900 to-indigo-950/40 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-6">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                            <div>
+                                <h3 class="text-lg font-bold text-slate-100 flex items-center gap-2">
+                                    <i class="fa-solid fa-file-invoice-dollar text-emerald-400"></i>
+                                    <span>Laporan Keuangan & Rekapitulasi Kas Bulanan</span>
+                                </h3>
+                                <p class="text-xs text-slate-400 mt-1">Hanya dapat diakses oleh Admin, Pengurus Komite, dan Bendahara Korlas.</p>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-full text-[9px] font-extrabold uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 tracking-wider">
+                                Hak Akses Administrator
+                            </span>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 mb-1.5">Pilih Bulan Periode</label>
+                                <select id="reportPeriodMonth" class="w-full text-xs p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200 focus:ring-1 focus:ring-emerald-500">
+                                    <option value="Januari">Januari</option>
+                                    <option value="Februari">Februari</option>
+                                    <option value="Maret">Maret</option>
+                                    <option value="April">April</option>
+                                    <option value="Mei" selected>Mei</option>
+                                    <option value="Juni">Juni</option>
+                                    <option value="Juli">Juli</option>
+                                    <option value="Agustus">Agustus</option>
+                                    <option value="September">September</option>
+                                    <option value="Oktober">Oktober</option>
+                                    <option value="November">November</option>
+                                    <option value="Desember">Desember</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 mb-1.5">Pilih Tahun Periode</label>
+                                <select id="reportPeriodYear" class="w-full text-xs p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200 focus:ring-1 focus:ring-emerald-500">
+                                    <option value="2025">2025</option>
+                                    <option value="2026" selected>2026</option>
+                                    <option value="2027">2027</option>
+                                </select>
+                            </div>
+                            <div class="md:col-span-2 flex items-end gap-2">
+                                <button onclick="downloadReportExcelPDF()" class="flex-grow p-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl text-xs text-slate-200 font-bold flex items-center justify-center gap-2 transition">
+                                    <i class="fa-solid fa-file-arrow-down text-emerald-400"></i>
+                                    <span>Download Laporan</span>
+                                </button>
+                                <button onclick="broadcastReportWA()" class="p-3 bg-emerald-600 hover:bg-emerald-500 rounded-xl text-xs text-white font-bold flex items-center justify-center gap-2 transition" title="Kirim via WhatsApp ke seluruh wali murid">
+                                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                                    <span>Share WA</span>
+                                </button>
+                                <button onclick="broadcastReportEmail()" class="p-3 bg-indigo-600 hover:bg-indigo-500 rounded-xl text-xs text-white font-bold flex items-center justify-center gap-2 transition" title="Kirim invoice laporan via Email ke seluruh wali murid">
+                                    <i class="fa-solid fa-envelope"></i>
+                                    <span>Share Email</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ledger Table -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl shadow-xl overflow-hidden">
+                        <div class="p-6 border-b border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                            <div>
+                                <h3 class="text-lg font-bold text-slate-200">Buku Besar & Histori Transaksi</h3>
+                                <p class="text-xs text-slate-500">Transparansi pencatatan kas keluar & masuk</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <select id="filterKategori" onchange="filterTransactions()" class="text-xs bg-slate-950 border border-slate-800 text-slate-300 rounded-lg p-2.5 outline-none">
+                                    <option value="ALL">Semua Kategori</option>
+                                    <option value="Iuran Bulanan">Iuran Bulanan</option>
+                                    <option value="Kegiatan">Kegiatan</option>
+                                    <option value="Sosial">Sosial</option>
+                                    <option value="Study Tour">Study Tour</option>
+                                </select>
+                                <button onclick="downloadLedgerSimulated()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg text-xs text-slate-300 flex items-center gap-2 transition">
+                                    <i class="fa-solid fa-download"></i>
+                                    <span>Export CSV</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-sm text-slate-300">
+                                <thead class="text-xs uppercase bg-slate-950 text-slate-400 border-b border-slate-800">
+                                    <tr>
+                                        <th class="px-6 py-4">Tanggal</th>
+                                        <th class="px-6 py-4">Kategori</th>
+                                        <th class="px-6 py-4">Keterangan</th>
+                                        <th class="px-6 py-4">Tipe</th>
+                                        <th class="px-6 py-4 text-right">Jumlah</th>
+                                        <th class="px-6 py-4 text-center">Status</th>
+                                        <th class="px-6 py-4 text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ledgerTableBody">
+                                    <!-- Dynamic rows loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- WALIMURID SPECIFIC BILL ACTION OR REPORT FOR PARENTS -->
+                    <div id="financialReportSection" class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-200">Laporan Status Iuran & Rekapitulasi Wali Murid</h3>
+                            <p class="text-xs text-slate-500">Kirimkan rincian tagihan kas atau tanda terima secara langsung ke WhatsApp pribadi wali murid masing-masing.</p>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs text-slate-300">
+                                <thead class="bg-slate-950 text-slate-400 border-b border-slate-800 uppercase">
+                                    <tr>
+                                        <th class="px-4 py-3">Wali Murid</th>
+                                        <th class="px-4 py-3">Siswa</th>
+                                        <th class="px-4 py-3">Kontak WA</th>
+                                        <th class="px-4 py-3">Tunggakan Kas</th>
+                                        <th class="px-4 py-3 text-center">Status Pembayaran</th>
+                                        <th class="px-4 py-3 text-center">Aksi Kirim Laporan</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="parentReportTableBody">
+                                    <!-- Dynamic rows matching parents data -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. ANNOUNCEMENTS VIEW -->
+                <div id="view_announcements" class="tab-pane hidden space-y-6">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-bold text-slate-200">Mading & Pengumuman Resmi</h3>
+                        <button onclick="openAnnouncementModal()" id="btnCreateAnnouncement" class="px-4 py-2 bg-gradient-to-r from-primary-600 to-cyan-600 hover:from-primary-500 hover:to-cyan-500 text-white font-semibold rounded-xl text-xs flex items-center gap-2 transition">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>Buat Pengumuman</span>
+                        </button>
+                    </div>
+                    <div id="announcementGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Dynamic announcements load -->
+                    </div>
+                </div>
+
+                <!-- 4. EVENTS VIEW -->
+                <div id="view_events" class="tab-pane hidden space-y-6">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-bold text-slate-200">Agenda Kegiatan Komunitas</h3>
+                        <button onclick="openEventModal()" id="btnCreateEvent" class="px-4 py-2 bg-gradient-to-r from-primary-600 to-cyan-600 hover:from-primary-500 hover:to-cyan-500 text-white font-semibold rounded-xl text-xs flex items-center gap-2 transition">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>Tambah Agenda</span>
+                        </button>
+                    </div>
+                    <div id="eventTimeline" class="space-y-4">
+                        <!-- Dynamic events calendar schedule -->
+                    </div>
+                </div>
+
+                <!-- 5. DOCUMENTS VIEW -->
+                <div id="view_documents" class="tab-pane hidden space-y-6">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-bold text-slate-200">Dokumentasi & Galeri Kegiatan</h3>
+                        <button onclick="openGalleryModal()" class="px-4 py-2 bg-gradient-to-r from-primary-600 to-cyan-600 hover:from-primary-500 hover:to-cyan-500 text-white font-semibold rounded-xl text-xs flex items-center gap-2 transition">
+                            <i class="fa-solid fa-upload"></i>
+                            <span>Upload Foto Kegiatan</span>
+                        </button>
+                    </div>
+                    <div id="galleryGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                        <!-- Dynamic media album cards -->
+                    </div>
+                </div>
+
+                <!-- 6. POLLING VIEW -->
+                <div id="view_polling" class="tab-pane hidden space-y-6">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-bold text-slate-200">Polling Jajak Pendapat</h3>
+                        <button onclick="openCreatePollModal()" id="btnCreatePoll" class="px-4 py-2 bg-gradient-to-r from-primary-600 to-cyan-600 hover:from-primary-500 hover:to-cyan-500 text-white font-semibold rounded-xl text-xs flex items-center gap-2 transition">
+                            <i class="fa-solid fa-square-plus"></i>
+                            <span>Buat Polling Baru</span>
+                        </button>
+                    </div>
+                    <div id="pollingContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Dynamic interactive polling cards -->
+                    </div>
+                </div>
+
+                <!-- 7. PERMISSIONS VIEW -->
+                <div id="view_permissions" class="tab-pane hidden space-y-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div id="parentPermissionForm" class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
+                            <h3 class="text-md font-bold text-slate-200 mb-4">Form Pengajuan Izin Siswa</h3>
+                            <form id="permissionForm" class="space-y-4" onsubmit="submitPermission(event)">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-400 mb-1.5">Nama Siswa</label>
+                                    <input type="text" id="permSiswa" required placeholder="Nama lengkap siswa" 
+                                        class="w-full text-xs p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-400 mb-1.5">Tipe Izin</label>
+                                    <select id="permTipe" class="w-full text-xs p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200">
+                                        <option value="Sakit">Sakit</option>
+                                        <option value="Izin Penting">Izin / Keperluan Mendesak</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-400 mb-1.5">Keterangan Alasan</label>
+                                    <textarea id="permAlasan" rows="3" required placeholder="Tuliskan keterangan detail..." 
+                                        class="w-full text-xs p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-400 mb-1.5 font-medium">Upload Surat (Opsional)</label>
+                                    <input type="file" id="permFile" class="w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-slate-300 hover:file:bg-slate-700">
+                                </div>
+                                <button type="submit" class="w-full py-3 bg-gradient-to-r from-primary-600 to-cyan-600 text-white font-semibold rounded-xl text-xs transition">
+                                    Kirim Pengajuan Izin
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
+                            <h3 class="text-md font-bold text-slate-200 mb-4">Daftar Pengajuan & Absensi Siswa</h3>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-xs text-slate-300">
+                                    <thead class="bg-slate-950 text-slate-400 border-b border-slate-800 uppercase">
+                                        <tr>
+                                            <th class="px-4 py-3">Nama Siswa</th>
+                                            <th class="px-4 py-3">Jenis Izin</th>
+                                            <th class="px-4 py-3">Alasan</th>
+                                            <th class="px-4 py-3">Status</th>
+                                            <th class="px-4 py-3 text-center">Verifikasi Korlas</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="permissionTableBody">
+                                        <!-- Dynamic rows loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 8. CLASSES MANAGEMENT TAB -->
+                <div id="view_classes" class="tab-pane hidden space-y-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl h-fit">
+                            <h3 class="text-md font-bold text-slate-200 mb-4">Tambah Kategori Kelas Baru</h3>
+                            <form id="addClassForm" onsubmit="submitAddClass(event)" class="space-y-4 text-xs">
+                                <div>
+                                    <label class="block font-semibold text-slate-400 mb-1.5">Nama Kelas</label>
+                                    <input type="text" id="newClassName" required placeholder="Contoh: Kelas 1-A" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200 focus:ring-1 focus:ring-cyan-500">
+                                </div>
+                                <div>
+                                    <label class="block font-semibold text-slate-400 mb-1.5">Keterangan / Tingkatan</label>
+                                    <input type="text" id="newClassDesc" placeholder="Contoh: Gedung Timur Lt. 1" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200 focus:ring-1 focus:ring-cyan-500">
+                                </div>
+                                <button type="submit" class="w-full py-3 bg-gradient-to-r from-cyan-600 to-primary-600 font-bold text-white rounded-xl transition shadow-lg">
+                                    Simpan Kategori Kelas
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
+                            <h3 class="text-md font-bold text-slate-200 mb-4">Daftar Kategori Kelas Aktif</h3>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-xs text-slate-300">
+                                    <thead class="bg-slate-950 text-slate-400 border-b border-slate-800 uppercase">
+                                        <tr>
+                                            <th class="px-6 py-4">ID Kelas</th>
+                                            <th class="px-6 py-4">Nama Kategori Kelas</th>
+                                            <th class="px-6 py-4">Keterangan</th>
+                                            <th class="px-6 py-4 text-center">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="classesTableBody">
+                                        <!-- Dynamic class rows loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 9. USERS MANAGEMENT TAB -->
+                <div id="view_users" class="tab-pane hidden space-y-6">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-200">Manajemen Pengguna & Anggota Komunitas</h3>
+                            <p class="text-xs text-slate-500">Tambahkan Wali Murid, Pengurus Korlas, maupun Komite baru ke sistem.</p>
+                        </div>
+                        <button onclick="openAddUserModal()" class="px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-semibold rounded-xl text-xs flex items-center gap-2 transition hover:scale-[1.01]">
+                            <i class="fa-solid fa-user-plus"></i>
+                            <span>Tambah Anggota Baru</span>
+                        </button>
+                    </div>
+
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl shadow-xl overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs text-slate-300">
+                                <thead class="bg-slate-950 text-slate-400 border-b border-slate-800 uppercase">
+                                    <tr>
+                                        <th class="px-6 py-4">Nama Lengkap</th>
+                                        <th class="px-6 py-4">No. HP (WhatsApp)</th>
+                                        <th class="px-6 py-4">Email</th>
+                                        <th class="px-6 py-4">Peran / Role</th>
+                                        <th class="px-6 py-4">Penempatan Kelas</th>
+                                        <th class="px-6 py-4 text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="usersTableBody">
+                                    <!-- Dynamic user rows loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 10. INTEGRATION & CONFIG VIEW -->
+                <div id="view_integration" class="tab-pane hidden space-y-8">
+                    
+                    <!-- BRANDING SECTIONS -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-xl space-y-6">
+                        <div class="flex items-center gap-3 text-cyan-400 mb-2">
+                            <i class="fa-solid fa-palette text-3xl"></i>
+                            <h3 class="text-xl font-bold">Kustomisasi & Branding Aplikasi</h3>
+                        </div>
+                        <p class="text-xs text-slate-400">Sesuaikan nama aplikasi, slogan, logo ikon, dan nama sekolah untuk mengadaptasi identitas sekolah Anda.</p>
+                        
+                        <form onsubmit="saveBranding(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-slate-300">
+                            <div>
+                                <label class="block font-semibold text-slate-400 mb-1.5">Nama Aplikasi Utama</label>
+                                <input type="text" id="brandAppNameInput" required class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-slate-400 mb-1.5">Nama Sekolah Pengguna</label>
+                                <input type="text" id="brandSchoolInput" required class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-slate-400 mb-1.5">Tagline Login</label>
+                                <input type="text" id="brandTaglineInput" required class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-slate-400 mb-1.5">Subheadline Login</label>
+                                <input type="text" id="brandSubheadlineInput" required class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block font-semibold text-slate-400 mb-1.5">Ikon Logo Utama (Class FontAwesome)</label>
+                                <select id="brandLogoSelect" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200">
+                                    <option value="fa-solid fa-people-roof">People Roof (fa-people-roof - Bawaan)</option>
+                                    <option value="fa-solid fa-school">School (fa-school)</option>
+                                    <option value="fa-solid fa-graduation-cap">Graduation Cap (fa-graduation-cap)</option>
+                                    <option value="fa-solid fa-users">Users (fa-users)</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="px-5 py-3 bg-gradient-to-r from-cyan-600 to-primary-600 text-white font-bold rounded-xl transition">
+                                Simpan & Terapkan Perubahan Branding
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- FONNTE INTEGRATION CONFIGURATION -->
+                    <div class="bg-gradient-to-r from-indigo-950/40 to-slate-900 border border-indigo-500/30 rounded-3xl p-8 shadow-xl space-y-6">
+                        <div>
+                            <div class="flex items-center gap-3 text-emerald-400 mb-2">
+                                <i class="fa-brands fa-whatsapp text-3xl"></i>
+                                <h3 class="text-xl font-bold">Integrasi WhatsApp Gateway (Fonnte API)</h3>
+                            </div>
+                            <p class="text-xs text-slate-400">Hubungkan token akun Fonnte Anda ke sistem iMersKORLAS di bawah ini. Token ini disimpan aman di database lokal Anda.</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl text-xs text-slate-300">
+                            <div>
+                                <label class="block font-semibold text-slate-400 mb-1.5">Fonnte API Token</label>
+                                <input type="password" id="fonnteTokenInput" placeholder="Masukkan Token API Fonnte Anda" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-slate-400 mb-1.5">Nomor Gateway Pengirim</label>
+                                <input type="text" id="fonnteSenderInput" placeholder="Contoh: 08111111111 (Nomor yang di-scan QR)" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200">
+                            </div>
+                        </div>
+
+                        <div class="pt-2">
+                            <button onclick="saveFonnteConfig()" class="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold rounded-xl text-xs transition">
+                                Simpan Konfigurasi Fonnte WA
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- NETWORK APPS SCRIPT -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-xl">
+                        <div class="flex items-center gap-3 text-indigo-400 mb-4">
+                            <i class="fa-solid fa-server text-2xl"></i>
+                            <h3 class="text-lg font-bold">Sambungan Google Apps Script</h3>
+                        </div>
+                        <div class="space-y-4 max-w-xl text-xs">
+                            <div class="flex gap-2">
+                                <input type="url" id="gasUrlInput" placeholder="https://script.google.com/macros/s/.../exec" 
+                                    class="flex-grow p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200">
+                                <button onclick="saveGasUrl()" class="px-4 py-3 bg-gradient-to-r from-primary-600 to-cyan-600 text-white font-bold rounded-xl transition">
+                                    Hubungkan
+                                </button>
+                            </div>
+                            <div class="flex gap-4 items-center">
+                                <span class="text-slate-400">Status: <span id="connectionStatusBadge" class="px-2 py-0.5 rounded-full font-bold">Demo Mode</span></span>
+                                <button onclick="resetToDemo()" class="text-primary-400 underline hover:text-primary-300">Gunakan Demo SandBox</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL: TAMBAH USER (ADMIN SECURE) -->
+    <div id="addUserModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-2 text-emerald-400">
+                    <i class="fa-solid fa-user-plus"></i>
+                    <h3 class="text-md font-bold text-slate-200">Tambah Anggota Baru</h3>
+                </div>
+                <button onclick="closeAddUserModal()" class="text-slate-400 hover:text-slate-200"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="addUserForm" onsubmit="submitAddUser(event)" class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Nama Lengkap</label>
+                    <input type="text" id="addUserName" required placeholder="Contoh: Ayah Reyhan" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">No. Handphone (WhatsApp)</label>
+                    <input type="tel" id="addUserPhone" required placeholder="Contoh: 08122334455" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Email Terdaftar</label>
+                    <input type="email" id="addUserEmail" required placeholder="Contoh: ayah.reyhan@gmail.com" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1">Peran / Role</label>
+                        <select id="addUserRole" required class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200">
+                            <option value="WALI MURID">Wali Murid</option>
+                            <option value="KORLAS">Korlas (Pengurus Kelas)</option>
+                            <option value="KOMITE">Komite Sekolah</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1">Kategori Kelas</label>
+                        <select id="addUserClass" required class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200">
+                            <!-- Dynamic Class Options populated from mockClasses -->
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-600 font-bold text-white rounded-xl transition shadow-lg">
+                    Daftarkan Pengguna Baru
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: LUPA PIN -->
+    <div id="forgotPinModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-2 text-primary-400">
+                    <i class="fa-solid fa-unlock-keyhole"></i>
+                    <h3 class="text-md font-bold text-slate-200">Pulihkan PIN Keamanan</h3>
+                </div>
+                <button onclick="closeForgotPinModal()" class="text-slate-400 hover:text-slate-200"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <p class="text-xs text-slate-400 leading-relaxed">Masukkan nomor WhatsApp dan email Anda yang terdaftar pada sistem iMersKORLAS. PIN baru atau petunjuk akses akan segera dikirimkan.</p>
+            <form onsubmit="submitForgotPin(event)" class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1.5">No. Handphone (WhatsApp)</label>
+                    <input type="tel" id="forgotPhone" required placeholder="Contoh: 08123456789" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200 focus:ring-1 focus:ring-primary-500">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1.5">Email Terdaftar</label>
+                    <input type="email" id="forgotEmail" required placeholder="bunda.keysha@gmail.com" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200 focus:ring-1 focus:ring-primary-500">
+                </div>
+                <button type="submit" class="w-full py-3 bg-gradient-to-r from-primary-600 to-cyan-600 font-bold text-white rounded-xl transition shadow-lg hover:from-primary-500">
+                    Kirim PIN Ke WhatsApp & Email
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: GANTI PIN -->
+    <div id="changePinModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-2 text-amber-500">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <h3 class="text-md font-bold text-slate-200">Ganti PIN Akses</h3>
+                </div>
+                <button onclick="closeChangePinModal()" class="text-slate-400 hover:text-slate-200"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <p class="text-xs text-slate-400">Demi keamanan, buat kombinasi 6-digit angka PIN baru secara berkala.</p>
+            <form onsubmit="submitChangePin(event)" class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1.5">PIN Lama Saat Ini</label>
+                    <input type="password" id="currentPin" required maxlength="6" pattern="[0-9]{6}" placeholder="••••••" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-center text-slate-200 text-lg tracking-widest focus:ring-1 focus:ring-amber-500">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1.5">PIN Baru (6 Digit)</label>
+                        <input type="password" id="newPin" required maxlength="6" pattern="[0-9]{6}" placeholder="••••••" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-center text-slate-200 text-lg tracking-widest focus:ring-1 focus:ring-primary-500">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1.5">Konfirmasi PIN Baru</label>
+                        <input type="password" id="confirmNewPin" required maxlength="6" pattern="[0-9]{6}" placeholder="••••••" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-center text-slate-200 text-lg tracking-widest focus:ring-1 focus:ring-primary-500">
+                    </div>
+                </div>
+                <button type="submit" class="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-500 font-bold text-white rounded-xl transition shadow-lg hover:from-amber-400">
+                    Simpan Perubahan PIN Keamanan
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: BUKTI PEMBAYARAN IURAN -->
+    <div id="paymentProofModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center">
+                <h3 class="text-md font-bold text-slate-200">Konfirmasi Setoran Kas / Iuran</h3>
+                <button onclick="closePaymentProofModal()" class="text-slate-400 hover:text-slate-200"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form onsubmit="submitPaymentProof(event)" class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-400 mb-1">Pilih Tagihan</label>
+                    <select id="payBilling" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200">
+                        <option value="Iuran Bulanan Mei - Rp 50.000">Iuran Bulanan Mei - Rp 50.000</option>
+                        <option value="Iuran Kegiatan Akhir Tahun - Rp 150.000">Iuran Kegiatan Akhir Tahun - Rp 150.000</option>
+                        <option value="Kas Sukarela">Kas Sukarela (Nominal Bebas)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-400 mb-1">Nominal yang Ditransfer (Rp)</label>
+                    <input type="number" id="payNominal" required placeholder="Contoh: 50000" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-400 mb-1">Bukti Transfer (Gambar / File)</label>
+                    <input type="file" id="payFile" required class="w-full text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-slate-300 hover:file:bg-slate-700">
+                </div>
+                <button type="submit" class="w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-600 font-bold text-white rounded-xl transition">
+                    Unggah & Konfirmasi Ke Korlas
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: INPUT MUTASI TRANSAKSI (ADMIN KORLAS/KOMITE) -->
+    <div id="addTransactionModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center">
+                <h3 class="text-md font-bold text-slate-200">Catat Mutasi Kas Baru</h3>
+                <button onclick="closeAddTransactionModal()" class="text-slate-400 hover:text-slate-200"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form onsubmit="submitTransactionForm(event)" class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-400 mb-1">Jenis Mutasi</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <label class="flex items-center justify-center gap-2 p-2.5 bg-slate-950 border border-slate-800 rounded-xl cursor-pointer">
+                            <input type="radio" name="transType" value="MASUK" checked class="text-emerald-500">
+                            <span class="text-slate-300">Pemasukan</span>
+                        </label>
+                        <label class="flex items-center justify-center gap-2 p-2.5 bg-slate-950 border border-slate-800 rounded-xl cursor-pointer">
+                            <input type="radio" name="transType" value="KELUAR" class="text-rose-500">
+                            <span class="text-slate-300">Pengeluaran</span>
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-400 mb-1">Kategori Keuangan</label>
+                    <select id="transCategory" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200">
+                        <option value="Iuran Bulanan">Iuran Bulanan</option>
+                        <option value="Kegiatan">Kegiatan Sekolah / Kelas</option>
+                        <option value="Study Tour">Study Tour</option>
+                        <option value="Sosial">Sosial / Santunan</option>
+                        <option value="Seragam">Seragam & Buku</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-400 mb-1">Keterangan Deskripsi</label>
+                    <input type="text" id="transDesc" required placeholder="Contoh: Pembelian spidol & sapu baru" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-400 mb-1">Jumlah Dana (Rp)</label>
+                    <input type="number" id="transAmount" required placeholder="Contoh: 150000" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200">
+                </div>
+                <button type="submit" class="w-full py-3 bg-gradient-to-r from-primary-600 to-cyan-600 font-bold text-white rounded-xl transition">
+                    Simpan Transaksi Ke Database
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: BUAT PENGUMUMAN -->
+    <div id="announcementModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center">
+                <h3 class="text-md font-bold text-slate-200">Buat Pengumuman Baru</h3>
+                <button onclick="closeAnnouncementModal()" class="text-slate-400 hover:text-slate-200"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form onsubmit="submitAnnouncementForm(event)" class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-400 mb-1">Judul Pengumuman</label>
+                    <input type="text" id="announceTitle" required placeholder="Tulis judul yang menarik" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-400 mb-1">Kategori Pengumuman</label>
+                    <select id="announceCategory" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200">
+                        <option value="KOMITE">Komite Sekolah (Global)</option>
+                        <option value="KORLAS">Korlas Kelas (Lokal)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-400 mb-1">Konten Pengumuman</label>
+                    <textarea id="announceBody" rows="4" required placeholder="Tulis detail pengumuman di sini..." class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200"></textarea>
+                </div>
+                <div class="flex items-center gap-2">
+                    <input type="checkbox" id="announcePinned" class="rounded text-primary-500">
+                    <label for="announcePinned" class="font-semibold text-slate-300">Sematkan di bagian atas dashboard</label>
+                </div>
+                <button type="submit" class="w-full py-3 bg-gradient-to-r from-primary-600 to-cyan-600 font-bold text-white rounded-xl transition">
+                    Terbitkan & Broadcast WA
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: BUAT EVENT AGENDA -->
+    <div id="eventModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center">
+                <h3 class="text-md font-bold text-slate-200">Tambah Jadwal / Agenda</h3>
+                <button onclick="closeEventModal()" class="text-slate-400 hover:text-slate-200"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form onsubmit="submitEventForm(event)" class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-400 mb-1">Nama Kegiatan</label>
+                    <input type="text" id="evtName" required placeholder="Contoh: Pembagian Rapor Semester 1" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-semibold text-slate-400 mb-1">Tanggal</label>
+                        <input type="date" id="evtDate" required class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-400 mb-1">Waktu</label>
+                        <input type="time" id="evtTime" required class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200">
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-400 mb-1">Lokasi Kegiatan</label>
+                    <input type="text" id="evtLocation" required placeholder="Contoh: Aula Lt. 3" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200">
+                </div>
+                <button type="submit" class="w-full py-3 bg-gradient-to-r from-primary-600 to-cyan-600 font-bold text-white rounded-xl transition">
+                    Simpan Agenda Kegiatan
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: BUAT POLLING -->
+    <div id="createPollModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center">
+                <h3 class="text-md font-bold text-slate-200">Buat Polling / Voting</h3>
+                <button onclick="closeCreatePollModal()" class="text-slate-400 hover:text-slate-200"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form onsubmit="submitCreatePollForm(event)" class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-400 mb-1">Topik Polling</label>
+                    <input type="text" id="pollQuestion" required placeholder="Contoh: Jadwal Study Tour Kelas 1-A?" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-400 mb-1">Opsi Jawaban A</label>
+                    <input type="text" id="pollOptionA" required placeholder="Pilihan Pertama" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-400 mb-1">Opsi Jawaban B</label>
+                    <input type="text" id="pollOptionB" required placeholder="Pilihan Kedua" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200">
+                </div>
+                <button type="submit" class="w-full py-3 bg-gradient-to-r from-primary-600 to-cyan-600 font-bold text-white rounded-xl transition">
+                    Mulai Polling Komunitas
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: UPLOAD GALLERY -->
+    <div id="galleryModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center">
+                <h3 class="text-md font-bold text-slate-200">Unggah Dokumentasi</h3>
+                <button onclick="closeGalleryModal()" class="text-slate-400 hover:text-slate-200"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form onsubmit="submitGalleryForm(event)" class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-400 mb-1">Keterangan Foto</label>
+                    <input type="text" id="galCaption" required placeholder="Contoh: Acara Silaturahmi Keluarga Besar Kelas 1-A" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl outline-none text-slate-200">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-400 mb-1">File Gambar (Foto/Dokumentasi)</label>
+                    <input type="file" id="galFile" required class="w-full text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-slate-300 hover:file:bg-slate-700">
+                </div>
+                <button type="submit" class="w-full py-3 bg-gradient-to-r from-primary-600 to-cyan-600 font-bold text-white rounded-xl transition">
+                    Simpan & Publikasikan
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT APP STATE & BUSINESS LOGIC -->
+    <script>
+        let branding = JSON.parse(localStorage.getItem('iMersBranding')) || {
+            appName: 'iMersKORLAS',
+            schoolName: 'SD Harapan Bangsa',
+            tagline: 'Connected. Organized. Transparent.',
+            subheadline: 'Digital Parent Community Platform',
+            logoIcon: 'fa-solid fa-people-roof'
+        };
+
+        let FONNTE_API_TOKEN = localStorage.getItem('fonnte_api_token') || '';
+        let FONNTE_SENDER = localStorage.getItem('fonnte_sender') || '';
+
+        // Mock Classes Database
+        let mockClasses = JSON.parse(localStorage.getItem('iMersClasses')) || [
+            { id: 1, name: 'Kelas 1-A', desc: 'Tingkat Satu Lantai Atas' },
+            { id: 2, name: 'Kelas 1-B', desc: 'Tingkat Satu Lantai Dasar' },
+            { id: 3, name: 'Kelas 2-A', desc: 'Gedung Utara Lt. 2' }
+        ];
+
+        // Mock Users Database with corresponding Email Backups
+        let mockUsers = JSON.parse(localStorage.getItem('iMersUsers')) || [
+            { id: 1, phone: '08123456789', pin: '123456', role: 'WALI MURID', name: 'Bunda Keysha (Indriana)', email: 'bunda.keysha@gmail.com', class: 'Kelas 1-A', paidStatus: 'BELUM BAYAR', tunggakan: 'Rp 50.000 (Iuran Mei)' },
+            { id: 2, phone: '08111111111', pin: '123456', role: 'KORLAS', name: 'Rika Amalia (Korlas 1-A)', email: 'rika.amalia@gmail.com', class: 'Kelas 1-A', paidStatus: 'LUNAS', tunggakan: 'Lunas' },
+            { id: 3, phone: '08222222222', pin: '123456', role: 'KOMITE', name: 'Drs. Hermawan (Ketua Komite)', email: 'hermawan.komite@gmail.com', class: 'SD Harapan Bangsa', paidStatus: 'LUNAS', tunggakan: 'Lunas' },
+            { id: 4, phone: '08333333333', pin: '123456', role: 'SUPER ADMIN', name: 'Ahmad Sobari (Sys Admin)', email: 'ahmad.sobari@gmail.com', class: 'Semua Kelas (Global)', paidStatus: 'LUNAS', tunggakan: 'Lunas' }
+        ];
+
+        let currentUser = JSON.parse(localStorage.getItem('iMersSession')) || mockUsers[0];
+        
+        let mockTransactions = [
+            { id: 1, date: '2026-05-18', category: 'Iuran Bulanan', desc: 'Iuran Bulanan Mei - Bunda Keysha', type: 'MASUK', amount: 50000, status: 'VERIFIED' },
+            { id: 2, date: '2026-05-17', category: 'Kegiatan', desc: 'Konsumsi Rapat Wali Murid', type: 'KELUAR', amount: 120000, status: 'VERIFIED' },
+            { id: 3, date: '2026-05-15', category: 'Sosial', desc: 'Sumbangan duka anak Pak Budi', type: 'KELUAR', amount: 200000, status: 'VERIFIED' },
+            { id: 4, date: '2026-05-14', category: 'Iuran Bulanan', desc: 'Iuran Bulanan Mei - Ayah Reyhan', type: 'MASUK', amount: 50000, status: 'PENDING' },
+            { id: 5, date: '2026-05-10', category: 'Kegiatan', desc: 'Pembelian Spidol & Alat Tulis Kelas', type: 'KELUAR', amount: 45000, status: 'VERIFIED' }
+        ];
+
+        let mockAnnouncements = [
+            { id: 1, title: 'Pembagian Buku Pelajaran Semester Baru', body: 'Harap seluruh wali murid mendampingi anak untuk mengambil buku paket pelajaran baru di Perpustakaan SD Harapan Bangsa mulai tanggal 20 Mei jam 08:00 - 12:00 WIB.', category: 'KOMITE', pinned: true, author: 'Komite Utama' },
+            { id: 2, title: 'Iuran Kas Kelas Rutin Bulan Mei', body: 'Diberitahukan kepada seluruh wali murid Kelas 1-A bahwa iuran rutin sebesar Rp 50.000 untuk bulan Mei sudah bisa ditransfer melalui Bank Mandiri Korlas (A.n Rika - Bendahara). Mohon konfirmasi bukti transfer di aplikasi.', category: 'KORLAS', pinned: false, author: 'Korlas 1-A' }
+        ];
+
+        let mockEvents = [
+            { id: 1, name: 'Pertemuan Rutin Wali Murid & Komite', date: '2026-05-22', time: '09:00', location: 'Aula Utama Lantai 3 Sekolah' },
+            { id: 2, name: 'Pentas Seni & Kreasi Anak Kelas 1', date: '2026-06-05', time: '08:00', location: 'Panggung Lapangan SD Harapan Bangsa' }
+        ];
+
+        let mockGalleries = [
+            { id: 1, caption: 'Kerja Bakti Wali Murid Renovasi Taman Kelas 1-A', url: 'https://placehold.co/600x400/1e293b/0ea5e9?text=Kerja+Bakti+1-A' },
+            { id: 2, caption: 'Keseruan Study Tour Museum Kereta Api', url: 'https://placehold.co/600x400/1e293b/10b981?text=Study+Tour+Museum' }
+        ];
+
+        let mockPolls = [
+            { id: 1, question: 'Apakah kita setuju mengadakan Study Tour ke Planetarium bulan depan?', optionA: 'Ya, Sangat Setuju', optionB: 'Tidak, Cari Alternatif Lain', votesA: 18, votesB: 4, hasVoted: false }
+        ];
+
+        let mockPermissions = [
+            { id: 1, name: 'Keysha Az-Zahra', type: 'Sakit', desc: 'Demam tinggi dan pilek sejak semalam', status: 'DIVERIFIKASI' },
+            { id: 2, name: 'Reyhan Pratama', type: 'Izin Penting', desc: 'Menghadiri acara pernikahan paman kandung', status: 'PENDING' }
+        ];
+
+        /**
+         * Safe fetch wrapper to handle Google Apps Script auth redirection/HTML output.
+         * Prevents crashing on SyntaxError: Unexpected token '<'
+         */
+        async function safeFetchJson(url, options = {}) {
+            try {
+                const response = await fetch(url, options);
+                if (!response.ok) {
+                    throw new Error(`HTTP status error: ${response.status}`);
+                }
+                const text = await response.text();
+                try {
+                    return JSON.parse(text);
+                } catch (parseErr) {
+                    // Check if the response was HTML (probably GAS Login Page redirection)
+                    if (text.trim().startsWith('<')) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Masalah Koneksi Cloud (GAS)',
+                            html: `<div class="text-left text-xs text-slate-300 space-y-2">
+                                <p>Sistem menerima respon HTML bukan JSON dari Google Apps Script.</p>
+                                <p><b>Penyebab Utama:</b> Deploy Web App Apps Script Anda belum diset ke akses publik.</p>
+                                <p><b>Solusi:</b> Di Apps Script, klik <i>Deploy > Manage Deployments</i>, pastikan kolom <b>Who has access</b> diset ke <b>Anyone</b> (Siapa Saja).</p>
+                            </div>`,
+                            confirmButtonColor: '#0ea5e9'
+                        });
+                        throw new Error("HTML response received instead of JSON. Ensure GAS access permissions are set to 'Anyone'.");
+                    }
+                    throw parseErr;
+                }
+            } catch (err) {
+                console.error("Connection Error:", err);
+                throw err;
+            }
+        }
+
+        /* On Load Initializer */
+        window.onload = function() {
+            applyBrandingUI();
+            updateNetworkStatusUI();
+            updateClassDropdowns();
+            
+            const session = localStorage.getItem('iMersSession');
+            if (session) {
+                currentUser = JSON.parse(session);
+                enterDashboard();
+            }
+        }
+
+        function applyBrandingUI() {
+            document.getElementById('loginLogoIcon').className = `${branding.logoIcon} text-3xl`;
+            document.getElementById('loginAppName').innerText = branding.appName;
+            document.getElementById('loginTagline').innerText = branding.tagline;
+            document.getElementById('loginSubheadline').innerText = branding.subheadline;
+
+            document.getElementById('sidebarAppName').innerText = branding.appName;
+            document.getElementById('sidebarLogoIcon').className = `${branding.logoIcon} text-lg`;
+            document.getElementById('topBarSchoolName').innerText = branding.schoolName;
+
+            document.getElementById('brandAppNameInput').value = branding.appName;
+            document.getElementById('brandSchoolInput').value = branding.schoolName;
+            document.getElementById('brandTaglineInput').value = branding.tagline;
+            document.getElementById('brandSubheadlineInput').value = branding.subheadline;
+            document.getElementById('brandLogoSelect').value = branding.logoIcon;
+
+            document.getElementById('fonnteTokenInput').value = FONNTE_API_TOKEN;
+            document.getElementById('fonnteSenderInput').value = FONNTE_SENDER;
+        }
+
+        function saveBranding(e) {
+            e.preventDefault();
+            branding.appName = document.getElementById('brandAppNameInput').value.trim();
+            branding.schoolName = document.getElementById('brandSchoolInput').value.trim();
+            branding.tagline = document.getElementById('brandTaglineInput').value.trim();
+            branding.subheadline = document.getElementById('brandSubheadlineInput').value.trim();
+            branding.logoIcon = document.getElementById('brandLogoSelect').value;
+
+            localStorage.setItem('iMersBranding', JSON.stringify(branding));
+            applyBrandingUI();
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Branding Berhasil Diperbarui!',
+                confirmButtonColor: '#0ea5e9'
+            });
+        }
+
+        function saveFonnteConfig() {
+            FONNTE_API_TOKEN = document.getElementById('fonnteTokenInput').value.trim();
+            FONNTE_SENDER = document.getElementById('fonnteSenderInput').value.trim();
+
+            localStorage.setItem('fonnte_api_token', FONNTE_API_TOKEN);
+            localStorage.setItem('fonnte_sender', FONNTE_SENDER);
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Konfigurasi Fonnte Disimpan!',
+                text: 'WhatsApp Gateway API Fonnte berhasil dimuat di sistem aman.',
+                confirmButtonColor: '#10b981'
+            });
+
+            simulateNotification("Keamanan Fonnte", `Token Fonnte diperbarui oleh ${currentUser.name}. Status: Aktif.`);
+        }
+
+        function openAddUserModal() {
+            document.getElementById('addUserModal').classList.remove('hidden');
+            document.getElementById('addUserModal').classList.add('flex');
+        }
+        function closeAddUserModal() {
+            document.getElementById('addUserModal').classList.add('hidden');
+        }
+
+        function submitAddUser(e) {
+            e.preventDefault();
+            const name = document.getElementById('addUserName').value.trim();
+            const phone = document.getElementById('addUserPhone').value.trim();
+            const email = document.getElementById('addUserEmail').value.trim();
+            const role = document.getElementById('addUserRole').value;
+            const uClass = document.getElementById('addUserClass').value;
+
+            const newUser = {
+                id: mockUsers.length + 1,
+                phone: phone,
+                pin: '123456', 
+                role: role,
+                name: name,
+                email: email,
+                class: uClass,
+                paidStatus: 'BELUM BAYAR',
+                tunggakan: 'Rp 50.000 (Iuran Mei)'
+            };
+
+            mockUsers.push(newUser);
+            localStorage.setItem('iMersUsers', JSON.stringify(mockUsers));
+            document.getElementById('addUserForm').reset();
+            closeAddUserModal();
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Pengguna Berhasil Ditambahkan!',
+                text: `Sandi PIN Masuk Bawaan: 123456`,
+                confirmButtonColor: '#10b981'
+            });
+
+            renderUsersTable();
+            renderReportsTable();
+
+            simulateNotification("Fonnte WA API", `[iMersKORLAS REGISTERED]\nHalo ${name},\nAkun Anda telah didaftarkan di iMersKORLAS (${uClass}).\n\nPIN Default: 123456\nSegera ganti PIN Anda demi keamanan.`);
+            simulateNotification("Gmail System API", `Subjek: [iMersKORLAS] Registrasi Akun Berhasil\n\nHalo ${name},\nAnda terdaftar sebagai ${role} di SD Harapan Bangsa.\nNo HP: ${phone}\nPIN: 123456`);
+        }
+
+        function renderUsersTable() {
+            const tbody = document.getElementById('usersTableBody');
+            tbody.innerHTML = '';
+
+            mockUsers.forEach(u => {
+                const tr = document.createElement('tr');
+                tr.className = "border-b border-slate-800 hover:bg-slate-900/40 transition";
+                tr.innerHTML = `
+                    <td class="px-6 py-4 font-semibold text-slate-200">${u.name}</td>
+                    <td class="px-6 py-4">${u.phone}</td>
+                    <td class="px-6 py-4 text-slate-400">${u.email}</td>
+                    <td class="px-6 py-4">
+                        <span class="px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-widest rounded-full bg-slate-800 border border-slate-700 text-slate-300">${u.role}</span>
+                    </td>
+                    <td class="px-6 py-4 text-slate-400 font-medium">${u.class}</td>
+                    <td class="px-6 py-4 text-center">
+                        <button onclick="deleteUserDemo(${u.id})" class="px-2.5 py-1 bg-red-950/60 border border-red-900/30 text-red-400 font-bold text-[10px] rounded-lg hover:bg-red-900 transition">Hapus</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function deleteUserDemo(id) {
+            Swal.fire({
+                title: 'Apakah Anda Yakin?',
+                text: "Data pengguna ini akan dihapus permanen dari sistem.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, Hapus!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    mockUsers = mockUsers.filter(u => u.id !== id);
+                    localStorage.setItem('iMersUsers', JSON.stringify(mockUsers));
+                    renderUsersTable();
+                    renderReportsTable();
+                    Swal.fire('Terhapus!', 'Pengguna telah dikeluarkan dari database.', 'success');
+                }
+            });
+        }
+
+        function renderReportsTable() {
+            const tbody = document.getElementById('parentReportTableBody');
+            tbody.innerHTML = '';
+
+            const parents = mockUsers.filter(u => u.role === 'WALI MURID');
+
+            parents.forEach(p => {
+                const badge = p.paidStatus === 'LUNAS' 
+                    ? `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-950 text-emerald-400 border border-emerald-500/30">Terverifikasi (Lunas)</span>`
+                    : `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-rose-950 text-rose-400 border border-rose-500/30">Belum Bayar</span>`;
+
+                const tr = document.createElement('tr');
+                tr.className = "border-b border-slate-800 hover:bg-slate-900/40 transition";
+                tr.innerHTML = `
+                    <td class="px-4 py-3 font-semibold text-slate-200">${p.name}</td>
+                    <td class="px-4 py-3 text-slate-400">Keysha Az-Zahra</td>
+                    <td class="px-4 py-3 font-mono text-slate-400">${p.phone}</td>
+                    <td class="px-4 py-3 text-slate-200 font-semibold">${p.tunggakan}</td>
+                    <td class="px-4 py-3 text-center">${badge}</td>
+                    <td class="px-4 py-3 text-center space-x-1">
+                        <button onclick="sendReportWA('${p.phone}', '${p.name}', '${p.tunggakan}')" class="px-2 py-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[10px] rounded-lg transition">
+                            <i class="fa-brands fa-whatsapp"></i> WA
+                        </button>
+                        <button onclick="sendReportEmail('${p.email}', '${p.name}', '${p.tunggakan}')" class="px-2 py-1 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-[10px] rounded-lg transition">
+                            <i class="fa-solid fa-envelope"></i> Email
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function sendReportWA(phone, name, bill) {
+            Swal.fire({
+                title: 'Kirim Laporan via WA?',
+                text: `Rincian tagihan akan dikirim secara personal ke ${name} (${phone}).`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#10b981',
+                confirmButtonText: 'Kirim via Fonnte'
+            }).then((res) => {
+                if (res.isConfirmed) {
+                    if (GAS_URL) {
+                        safeFetchJson(`${GAS_URL}?action=sendWA&phone=${encodeURIComponent(phone)}&name=${encodeURIComponent(name)}&bill=${encodeURIComponent(bill)}`)
+                        .catch(err => console.warn("GAS execution bypassed for simulation."));
+                    }
+                    Swal.fire('Terkirim!', `WhatsApp tagihan berhasil disiarkan melalui Fonnte Gateway.`, 'success');
+                    simulateNotification("Fonnte WhatsApp API", `[TAGIHAN iMersKORLAS]\nHalo ${name},\nBerikut adalah rincian tagihan kas kelas Anda:\n*Status:* ${bill}\n\nMohon segera melakukan pembayaran dan konfirmasi melalui aplikasi.`);
+                }
+            });
+        }
+
+        function sendReportEmail(email, name, bill) {
+            Swal.fire({
+                title: 'Kirim Laporan via Email?',
+                text: `Kwitansi digital akan dikirim ke alamat email: ${email}`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#4f46e5',
+                confirmButtonText: 'Kirim via Gmail'
+            }).then((res) => {
+                if (res.isConfirmed) {
+                    Swal.fire('Terkirim!', `Email rincian keuangan berhasil dikirimkan ke ${email}`, 'success');
+                    simulateNotification("Gmail System (Google Apps Script)", `Subjek: [iMersKORLAS] Laporan Status Keuangan Kelas\n\nHalo ${name},\n\nRincian Tunggakan/Iuran Anda saat ini adalah: ${bill}.\nSilakan unduh lampiran kwitansi pada aplikasi.`);
+                }
+            });
+        }
+
+        function showQuickAccessDemo() {
+            document.getElementById('loginPhone').value = "08123456789";
+            document.getElementById('loginPin').value = "123456";
+            
+            Swal.fire({
+                icon: 'info',
+                title: 'Masuk Sebagai Demo',
+                text: 'Kredensial bawaan berhasil terisi otomatis. Anda dapat menukar peran (Role) kapan saja di sidebar kiri.',
+                timer: 2000,
+                showConfirmButton: false
+            });
+            setTimeout(() => {
+                loginSuccess(mockUsers[0]);
+            }, 1000);
+        }
+
+        document.getElementById('loginForm').onsubmit = function(e) {
+            e.preventDefault();
+            const phone = document.getElementById('loginPhone').value.trim();
+            const pin = document.getElementById('loginPin').value.trim();
+
+            const matchedUser = mockUsers.find(u => u.phone === phone && u.pin === pin);
+
+            if (matchedUser) {
+                loginSuccess(matchedUser);
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal Masuk!',
+                    text: 'Kombinasi No. Handphone atau PIN Keamanan Anda salah.',
+                    confirmButtonColor: '#0ea5e9'
+                });
+            }
+        }
+
+        function loginSuccess(userObj) {
+            currentUser = userObj;
+            localStorage.setItem('iMersSession', JSON.stringify(currentUser));
+            enterDashboard();
+        }
+
+        function enterDashboard() {
+            document.getElementById('authScreen').classList.add('hidden');
+            document.getElementById('mainDashboard').classList.remove('hidden');
+            
+            const sel = document.getElementById('demoRoleSelector');
+            if (sel) {
+                sel.value = currentUser.role;
+            }
+
+            updateProfileUI();
+            initCashflowChart();
+            switchTab('dashboard');
+        }
+
+        function logout() {
+            localStorage.removeItem('iMersSession');
+            document.getElementById('mainDashboard').classList.add('hidden');
+            document.getElementById('authScreen').classList.remove('hidden');
+            document.getElementById('loginForm').reset();
+        }
+
+        function changeRoleDemo(role) {
+            const matched = mockUsers.find(u => u.role === role);
+            if (matched) {
+                currentUser = matched;
+            } else {
+                currentUser.role = role;
+            }
+
+            localStorage.setItem('iMersSession', JSON.stringify(currentUser));
+            updateProfileUI();
+            switchTab('dashboard');
+            
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: `Berhasil berganti peran: ${role}`,
+                showConfirmButton: false,
+                timer: 2000
+            });
+        }
+
+        function updateProfileUI() {
+            document.getElementById('userName').innerText = currentUser.name;
+            document.getElementById('userRoleBadge').innerText = currentUser.role;
+            document.getElementById('userClassName').innerText = currentUser.class;
+            document.getElementById('userAvatar').innerText = currentUser.name.charAt(0);
+            
+            const tabUsers = document.getElementById('sidebarTabUsers');
+            const tabClasses = document.getElementById('sidebarTabClasses');
+
+            if (currentUser.role === 'WALI MURID') {
+                document.getElementById('parentPermissionForm').classList.remove('hidden');
+                document.getElementById('btnBayarIuran').classList.remove('hidden');
+                document.getElementById('btnTambahTransaksiAdmin').classList.add('hidden');
+                document.getElementById('btnCreateAnnouncement').classList.add('hidden');
+                document.getElementById('btnCreateEvent').classList.add('hidden');
+                document.getElementById('btnCreatePoll').classList.add('hidden');
+                
+                if (tabUsers) tabUsers.classList.add('hidden');
+                if (tabClasses) tabClasses.classList.add('hidden');
+                document.getElementById('adminReportGeneratorSection').classList.add('hidden');
+            } else {
+                document.getElementById('parentPermissionForm').classList.add('hidden');
+                document.getElementById('btnBayarIuran').classList.add('hidden');
+                document.getElementById('btnTambahTransaksiAdmin').classList.remove('hidden');
+                document.getElementById('btnCreateAnnouncement').classList.remove('hidden');
+                document.getElementById('btnCreateEvent').classList.remove('hidden');
+                document.getElementById('btnCreatePoll').classList.remove('hidden');
+                
+                if (tabUsers) tabUsers.classList.remove('hidden');
+                if (tabClasses) tabClasses.classList.remove('hidden');
+                document.getElementById('adminReportGeneratorSection').classList.remove('hidden');
+            }
+        }
+
+        function downloadReportExcelPDF() {
+            const m = document.getElementById('reportPeriodMonth').value;
+            const y = document.getElementById('reportPeriodYear').value;
+
+            Swal.fire({
+                title: 'Sedang Memproses Laporan...',
+                html: `Menghimpun seluruh data transaksi kas periode <b>${m} ${y}</b>`,
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            }).then(() => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Laporan Siap Diunduh!',
+                    html: `Berkas keuangan rekapitulasi periodik <b>iMersKORLAS_${m}_${y}.xlsx</b> berhasil di-render dari Google Sheets.`,
+                    confirmButtonColor: '#10b981'
+                });
+            });
+        }
+
+        function broadcastReportWA() {
+            const m = document.getElementById('reportPeriodMonth').value;
+            const y = document.getElementById('reportPeriodYear').value;
+
+            Swal.fire({
+                title: 'Broadcast WA Laporan?',
+                html: `Kirimkan ringkasan audit rekap kas periode <b>${m} ${y}</b> ke seluruh nomor Wali Murid secara massal?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#10b981',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, Broadcast!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Siaran WhatsApp Berhasil!',
+                        text: 'Pemberitahuan audit kas telah meluncur ke seluruh nomor WhatsApp Wali Murid via Fonnte.',
+                        confirmButtonColor: '#10b981'
+                    });
+
+                    simulateNotification("Fonnte WA Broadcast", `[AUDIT KAS KOMUNITAS - ${m.toUpperCase()} ${y}]\n\nHalo Bunda & Ayah,\nBerikut laporan saldo keuangan kas Kelas 1-A per ${m} ${y}:\n\n- Saldo Awal: Rp 3.500.000\n- Total Masuk: Rp 1.660.000\n- Total Keluar: Rp 410.000\n- Saldo Akhir Saat Ini: Rp 4.750.000\n\nSeluruh laporan bersifat transparan dan dapat dipantau di portal web iMersKORLAS Anda.`);
+                }
+            });
+        }
+
+        function broadcastReportEmail() {
+            const m = document.getElementById('reportPeriodMonth').value;
+            const y = document.getElementById('reportPeriodYear').value;
+
+            Swal.fire({
+                title: 'Kirim Email Masal?',
+                html: `Sistem akan mengirim email berkas lampiran PDF laporan keuangan <b>${m} ${y}</b> ke seluruh email wali murid yang terdaftar.`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#4f46e5',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, Kirim Email!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Email Terkirim!',
+                        text: 'Sistem Google Apps Script berhasil menyebarkan berkas invoice PDF laporan keuangan.',
+                        confirmButtonColor: '#4f46e5'
+                    });
+
+                    simulateNotification("Gmail System (Google Apps Script)", `Subjek: [iMersKORLAS] Laporan Rekapitulasi Kas Bulan ${m} ${y}\n\nHalo Wali Murid,\nKami lampirkan berkas PDF transparansi penggunaan dana kelas untuk evaluasi bersama.`);
+                }
+            });
+        }
+
+        function openForgotPinModal() {
+            document.getElementById('forgotPinModal').classList.remove('hidden');
+            document.getElementById('forgotPinModal').classList.add('flex');
+        }
+        function closeForgotPinModal() {
+            document.getElementById('forgotPinModal').classList.add('hidden');
+            document.getElementById('forgotPinModal').classList.remove('flex');
+        }
+
+        function submitForgotPin(e) {
+            e.preventDefault();
+            const phone = document.getElementById('forgotPhone').value.trim();
+            const email = document.getElementById('forgotEmail').value.trim().toLowerCase();
+
+            const matchedUser = mockUsers.find(u => u.phone === phone && u.email.toLowerCase() === email);
+
+            if (matchedUser) {
+                if (GAS_URL) {
+                    safeFetchJson(`${GAS_URL}?action=forgotPin&phone=${encodeURIComponent(phone)}&email=${encodeURIComponent(email)}`)
+                    .catch(err => console.warn("GAS Connection failed. Simulating locally."));
+                }
+
+                closeForgotPinModal();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'PIN Terkirim!',
+                    html: `Kredensial keamanan untuk akun <b>${matchedUser.name}</b> berhasil dikirimkan ke nomor WhatsApp <b>${phone}</b> dan email <b>${email}</b>.`,
+                    confirmButtonColor: '#0ea5e9'
+                });
+
+                simulateNotification("Fonnte WhatsApp API", `[iMersKORLAS SECURITY]\nHalo ${matchedUser.name},\nPermintaan pemulihan PIN Anda berhasil disetujui.\nPIN keamanan Anda adalah: *${matchedUser.pin}*`);
+                simulateNotification("Gmail System (Google Apps Script Backup)", `Subjek: [iMersKORLAS] Pemulihan PIN Akun Anda\n\nHalo ${matchedUser.name},\nPIN masuk Anda saat ini adalah: ${matchedUser.pin}\n\nMohon ganti PIN ini sesegera mungkin di menu pengaturan setelah berhasil masuk.`);
+                
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Tidak Ditemukan!',
+                    text: 'Tidak ada kecocokan data antara No. Handphone dan Email terdaftar pada sistem kami.',
+                    confirmButtonColor: '#f43f5e'
+                });
+            }
+        }
+
+        function openChangePinModal() {
+            document.getElementById('changePinModal').classList.remove('hidden');
+            document.getElementById('changePinModal').classList.add('flex');
+        }
+        function closeChangePinModal() {
+            document.getElementById('changePinModal').classList.add('hidden');
+            document.getElementById('changePinModal').classList.remove('flex');
+        }
+
+        function submitChangePin(e) {
+            e.preventDefault();
+            const current = document.getElementById('currentPin').value.trim();
+            const newPin = document.getElementById('newPin').value.trim();
+            const confirmNew = document.getElementById('confirmNewPin').value.trim();
+
+            if (current !== currentUser.pin) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'PIN Lama Salah!',
+                    text: 'Gagal mengganti PIN. PIN keamanan saat ini yang dimasukkan tidak cocok.',
+                    confirmButtonColor: '#f43f5e'
+                });
+                return;
+            }
+
+            if (newPin !== confirmNew) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Konfirmasi PIN Gagal!',
+                    text: 'Sandi PIN baru dengan input Konfirmasi PIN Baru tidak sama.',
+                    confirmButtonColor: '#f59e0b'
+                });
+                return;
+            }
+
+            currentUser.pin = newPin;
+            localStorage.setItem('iMersSession', JSON.stringify(currentUser));
+            
+            const localUserIdx = mockUsers.findIndex(u => u.phone === currentUser.phone);
+            if (localUserIdx !== -1) {
+                mockUsers[localUserIdx].pin = newPin;
+                localStorage.setItem('iMersUsers', JSON.stringify(mockUsers));
+            }
+
+            if (GAS_URL) {
+                safeFetchJson(`${GAS_URL}?action=changePin&phone=${encodeURIComponent(currentUser.phone)}&newPin=${encodeURIComponent(newPin)}`)
+                .catch(err => console.warn("Live GAS server offline. Saved changes locally."));
+            }
+
+            closeChangePinModal();
+            document.getElementById('currentPin').value = "";
+            document.getElementById('newPin').value = "";
+            document.getElementById('confirmNewPin').value = "";
+
+            Swal.fire({
+                icon: 'success',
+                title: 'PIN Berhasil Diperbarui!',
+                confirmButtonColor: '#10b981'
+            });
+
+            simulateNotification("Keamanan Sistem", `Sandi login untuk akun ${currentUser.name} telah diubah.`);
+        }
+
+        function updateGreetingAndQuote() {
+            const hour = new Date().getHours();
+            let greeting = "Selamat Pagi";
+            let icon = "🌅";
+            let quotes = [];
+
+            if (hour >= 4 && hour < 11) {
+                greeting = "Selamat Pagi";
+                icon = "🌅";
+                quotes = [
+                    "Pagi yang cerah untuk masa depan cerah anak-anak kita. Selamat beraktivitas, Bunda & Ayah!",
+                    "Setiap pagi membawa harapan baru. Mari dampingi tumbuh kembang si kecil dengan senyuman terbaik.",
+                    "Semangat pagi! Langkah kecil pendampingan hari ini menentukan kesuksesan anak di masa depan."
+                ];
+            } else if (hour >= 11 && hour < 15) {
+                greeting = "Selamat Siang";
+                icon = "☀️";
+                quotes = [
+                    "Tetap semangat di tengah kesibukan siang ini. Dedikasi orang tua adalah fondasi utama kesuksesan anak.",
+                    "Selamat siang! Luangkan sejenak waktu untuk menanyakan kabar si kecil di sekolah hari ini."
+                ];
+            } else if (hour >= 15 && hour < 19) {
+                greeting = "Selamat Sore";
+                icon = "🌇";
+                quotes = [
+                    "Selamat sore. Waktunya menyambut anak pulang sekolah dengan pelukan hangat dan apresiasi tulus.",
+                    "Menjelang petang, mari luangkan waktu mendengar petualangan hebat si kecil di sekolah hari ini."
+                ];
+            } else {
+                greeting = "Selamat Malam";
+                icon = "🌙";
+                quotes = [
+                    "Selamat malam. Istirahatlah dengan tenang, esok hari ada banyak cerita indah yang siap diukir kembali.",
+                    "Malam hari adalah momen terbaik untuk berbincang santai dan mendoakan kesuksesan masa depan anak-anak kita."
+                ];
+            }
+
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)] || quotes[0];
+            document.getElementById('timeGreeting').innerText = greeting;
+            document.getElementById('greetingIcon').innerText = icon;
+            document.getElementById('greetingUserName').innerText = currentUser.name;
+            document.getElementById('timeQuote').innerText = `"${randomQuote}"`;
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-link').forEach(el => el.classList.remove('text-slate-100', 'bg-slate-800/50', 'active'));
+
+            const selectedPane = document.getElementById(`view_${tabName}`);
+            if (selectedPane) selectedPane.classList.remove('hidden');
+
+            const activeLink = Array.from(document.querySelectorAll('.tab-link')).find(el => {
+                return el.getAttribute('onclick').includes(tabName);
+            });
+            if (activeLink) {
+                activeLink.classList.add('text-slate-100', 'bg-slate-800/50', 'active');
+            }
+
+            const titleEl = document.getElementById('tabTitle');
+            const subtitleEl = document.getElementById('tabSubtitle');
+
+            if (tabName === 'dashboard') {
+                titleEl.innerText = "Dashboard Utama";
+                subtitleEl.innerText = "Status ringkasan dan aktivitas platform iMersKORLAS.";
+                updateGreetingAndQuote();
+                renderDashboardContent();
+            } else if (tabName === 'classes') {
+                titleEl.innerText = "Kelola Kategori Kelas";
+                subtitleEl.innerText = "Buat dan pantau daftar kategori penempatan kelas komunitas.";
+                renderClassesTable();
+            } else if (tabName === 'users') {
+                titleEl.innerText = "Manajemen Pengguna";
+                subtitleEl.innerText = "Panel mendaftarkan user baru, mengatur peran (role), dan integrasi kelas.";
+                renderUsersTable();
+            } else if (tabName === 'financial') {
+                titleEl.innerText = "Sistem Transparansi Keuangan";
+                subtitleEl.innerText = "Kelola iuran bulanan, kas operasional, dan mutasi keuangan.";
+                renderLedger();
+                renderReportsTable();
+            } else if (tabName === 'announcements') {
+                titleEl.innerText = "Papan Mading & Pengumuman";
+                subtitleEl.innerText = "Informasi resmi sekolah, agenda komite, dan himbauan korlas.";
+                renderAnnouncements();
+            } else if (tabName === 'events') {
+                titleEl.innerText = "Kalender & Agenda Komunitas";
+                subtitleEl.innerText = "Rapat wali murid, kegiatan kelas, dan pementasan sekolah.";
+                renderEvents();
+            } else if (tabName === 'documents') {
+                titleEl.innerText = "Arsip Dokumentasi Kegiatan";
+                subtitleEl.innerText = "Galeri foto dan arsip dokumentasi digital wali murid.";
+                renderGalleries();
+            } else if (tabName === 'polling') {
+                titleEl.innerText = "Polling & Musyawarah Digital";
+                subtitleEl.innerText = "Platform jajak pendapat keputusan kelas dan komite.";
+                renderPolls();
+            } else if (tabName === 'permissions') {
+                titleEl.innerText = "Sistem Manajemen Izin Anak";
+                subtitleEl.innerText = "Wali murid mengajukan izin tidak hadir anak dan verifikasi korlas.";
+                renderPermissions();
+            } else if (tabName === 'integration') {
+                titleEl.innerText = "Koneksi API Cloud";
+                subtitleEl.innerText = "Integrasi penuh ke Google Sheets DB, WhatsApp Gateway & Email.";
+                document.getElementById('gasUrlInput').value = GAS_URL;
+            }
+        }
+
+        /* Class Management Functions */
+        function renderClassesTable() {
+            const tbody = document.getElementById('classesTableBody');
+            tbody.innerHTML = '';
+
+            mockClasses.forEach(cls => {
+                const tr = document.createElement('tr');
+                tr.className = "border-b border-slate-800 hover:bg-slate-900/40 transition";
+                tr.innerHTML = `
+                    <td class="px-6 py-4 font-mono font-bold text-cyan-400">#${cls.id}</td>
+                    <td class="px-6 py-4 font-semibold text-slate-200">${cls.name}</td>
+                    <td class="px-6 py-4 text-slate-400">${cls.desc || '-'}</td>
+                    <td class="px-6 py-4 text-center">
+                        <button onclick="deleteClassDemo(${cls.id})" class="px-2.5 py-1 bg-rose-950/60 border border-rose-900/30 text-rose-400 font-bold text-[10px] rounded-lg hover:bg-rose-900 transition">Hapus</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            updateClassDropdowns();
+        }
+
+        function submitAddClass(e) {
+            e.preventDefault();
+            const name = document.getElementById('newClassName').value.trim();
+            const desc = document.getElementById('newClassDesc').value.trim();
+
+            const newClass = {
+                id: mockClasses.length > 0 ? Math.max(...mockClasses.map(c => c.id)) + 1 : 1,
+                name: name,
+                desc: desc
+            };
+
+            mockClasses.push(newClass);
+            localStorage.setItem('iMersClasses', JSON.stringify(mockClasses));
+            document.getElementById('addClassForm').reset();
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Kelas Ditambahkan!',
+                text: `Kategori ${name} berhasil dibuat di sistem database.`,
+                confirmButtonColor: '#0ea5e9'
+            });
+
+            renderClassesTable();
+        }
+
+        function deleteClassDemo(id) {
+            Swal.fire({
+                title: 'Apakah Anda Yakin?',
+                text: "Kategori kelas ini akan dihapus permanen.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, Hapus!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    mockClasses = mockClasses.filter(c => c.id !== id);
+                    localStorage.setItem('iMersClasses', JSON.stringify(mockClasses));
+                    renderClassesTable();
+                    Swal.fire('Terhapus!', 'Kelas telah dihilangkan dari sistem.', 'success');
+                }
+            });
+        }
+
+        function updateClassDropdowns() {
+            const userClassSelect = document.getElementById('addUserClass');
+            if (userClassSelect) {
+                userClassSelect.innerHTML = '';
+                mockClasses.forEach(cls => {
+                    const opt = document.createElement('option');
+                    opt.value = cls.name;
+                    opt.innerText = cls.name;
+                    userClassSelect.appendChild(opt);
+                });
+            }
+        }
+
+        function approveTransaction(id) {
+            const index = mockTransactions.findIndex(t => t.id === id);
+            if (index !== -1) {
+                mockTransactions[index].status = 'VERIFIED';
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Persetujuan Berhasil!',
+                    text: 'Uang masuk sudah diverifikasi dan masuk kas resmi.',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                renderLedger();
+                simulateNotification("Email Notification Sent", `Invoice Resmi: Pembayaran ID #${id} berhasil diverifikasi komite.`);
+            }
+        }
+
+        function rejectTransaction(id) {
+            const index = mockTransactions.findIndex(t => t.id === id);
+            if (index !== -1) {
+                mockTransactions.splice(index, 1);
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Transaksi Ditolak',
+                    text: 'Konfirmasi dibatalkan oleh korlas.',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                renderLedger();
+            }
+        }
+
+        function downloadLedgerSimulated() {
+            Swal.fire({
+                icon: 'success',
+                title: 'Export Berhasil!',
+                text: 'File CSV berhasil dihasilkan secara real-time dari buku besar keuangan.',
+                timer: 2500,
+                showConfirmButton: false
+            });
+        }
+
+        function openPaymentProofModal() { document.getElementById('paymentProofModal').classList.remove('hidden'); document.getElementById('paymentProofModal').classList.add('flex'); }
+        function closePaymentProofModal() { document.getElementById('paymentProofModal').classList.add('hidden'); }
+        function openAddTransactionModal() { document.getElementById('addTransactionModal').classList.remove('hidden'); document.getElementById('addTransactionModal').classList.add('flex'); }
+        function closeAddTransactionModal() { document.getElementById('addTransactionModal').classList.add('hidden'); }
+
+        function submitPaymentProof(e) {
+            e.preventDefault();
+            const billing = document.getElementById('payBilling').value;
+            const nominal = parseInt(document.getElementById('payNominal').value);
+            
+            mockTransactions.unshift({
+                id: mockTransactions.length + 1,
+                date: new Date().toISOString().split('T')[0],
+                category: 'Iuran Bulanan',
+                desc: `${billing} - ${currentUser.name}`,
+                type: 'MASUK',
+                amount: nominal,
+                status: 'PENDING'
+            });
+
+            closePaymentProofModal();
+            Swal.fire({
+                icon: 'success',
+                title: 'Konfirmasi Dikirim!',
+                text: 'Bukti transfer sudah diserahkan ke Korlas. Menunggu verifikasi finansial.',
+                confirmButtonColor: '#0ea5e9'
+            });
+            renderLedger();
+            simulateNotification("WhatsApp Broadcast (Fonnte API)", `Halo Korlas Bendahara, Anda menerima konfirmasi iuran baru sebesar Rp ${nominal} dari ${currentUser.name}. Mohon periksa web.`);
+        }
+
+        function submitTransactionForm(e) {
+            e.preventDefault();
+            const type = document.querySelector('input[name="transType"]:checked').value;
+            const cat = document.getElementById('transCategory').value;
+            const desc = document.getElementById('transDesc').value;
+            const amount = parseInt(document.getElementById('transAmount').value);
+
+            mockTransactions.unshift({
+                id: mockTransactions.length + 1,
+                date: new Date().toISOString().split('T')[0],
+                category: cat,
+                desc: desc,
+                type: type,
+                amount: amount,
+                status: 'VERIFIED'
+            });
+
+            closeAddTransactionModal();
+            Swal.fire({
+                icon: 'success',
+                title: 'Transaksi Dicatat!',
+                text: 'Mutasi buku besar kas sekolah berhasil divalidasi.',
+                confirmButtonColor: '#0ea5e9'
+            });
+            renderLedger();
+        }
+
+        function renderAnnouncements() {
+            const grid = document.getElementById('announcementGrid');
+            grid.innerHTML = '';
+
+            mockAnnouncements.forEach(a => {
+                const pinnedBadge = a.pinned ? `<span class="px-2 py-0.5 bg-primary-900 text-primary-400 font-bold text-[9px] rounded-md border border-primary-500/20"><i class="fa-solid fa-thumbtack"></i> PIN</span>` : '';
+                
+                const card = document.createElement('div');
+                card.className = "p-6 bg-slate-900 border border-slate-800 rounded-3xl shadow-xl space-y-3 relative overflow-hidden";
+                card.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="px-2.5 py-1 text-[10px] font-bold tracking-widest bg-slate-800 rounded-full border border-slate-700 text-slate-300 uppercase">${a.category}</span>
+                        ${pinnedBadge}
+                    </div>
+                    <h4 class="text-md font-bold text-slate-100">${a.title}</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">${a.body}</p>
+                    <div class="pt-4 border-t border-slate-800/80 flex justify-between items-center text-[11px] text-slate-500">
+                        <span>Ditulis oleh: <strong class="text-slate-400">${a.author}</strong></span>
+                        <span>SD Harapan Bangsa</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function openAnnouncementModal() { document.getElementById('announcementModal').classList.remove('hidden'); document.getElementById('announcementModal').classList.add('flex'); }
+        function closeAnnouncementModal() { document.getElementById('announcementModal').classList.add('hidden'); }
+
+        function submitAnnouncementForm(e) {
+            e.preventDefault();
+            const title = document.getElementById('announceTitle').value;
+            const cat = document.getElementById('announceCategory').value;
+            const body = document.getElementById('announceBody').value;
+            const pinned = document.getElementById('announcePinned').checked;
+
+            if (pinned) {
+                mockAnnouncements.forEach(a => a.pinned = false);
+            }
+
+            mockAnnouncements.unshift({
+                id: mockAnnouncements.length + 1,
+                title: title,
+                body: body,
+                category: cat,
+                pinned: pinned,
+                author: currentUser.name
+            });
+
+            closeAnnouncementModal();
+            Swal.fire({
+                icon: 'success',
+                title: 'Pengumuman Diterbitkan!',
+                text: 'Wali murid di kelas akan mendapat pemberitahuan secara real-time.',
+                confirmButtonColor: '#0ea5e9'
+            });
+            renderAnnouncements();
+            simulateNotification("Fonnte WA Broadcast", `[MADING ONLINE SD HARAPAN BANGSA]\n📢 ${title}\n\n${body}`);
+        }
+
+        function renderEvents() {
+            const container = document.getElementById('eventTimeline');
+            container.innerHTML = '';
+
+            mockEvents.forEach(evt => {
+                const parts = evt.date.split('-');
+                const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'];
+                const month = monthNames[parseInt(parts[1]) - 1] || 'Mei';
+
+                const card = document.createElement('div');
+                card.className = "flex gap-4 p-5 bg-slate-900 border border-slate-800 rounded-3xl shadow-xl hover:border-slate-700/60 transition";
+                card.innerHTML = `
+                    <div class="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-primary-600 to-cyan-600 text-white rounded-2xl flex flex-col items-center justify-center font-bold">
+                        <span class="text-lg leading-none">${parts[2]}</span>
+                        <span class="text-[10px] uppercase mt-1 tracking-widest">${month}</span>
+                    </div>
+                    <div class="flex-grow">
+                        <h4 class="text-sm font-bold text-slate-200">${evt.name}</h4>
+                        <div class="flex flex-wrap gap-4 text-[11px] text-slate-500 mt-2">
+                            <span><i class="fa-solid fa-clock text-primary-500 mr-1.5"></i>${evt.time} WIB</span>
+                            <span><i class="fa-solid fa-location-dot text-rose-500 mr-1.5"></i>${evt.location}</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function openEventModal() { document.getElementById('eventModal').classList.remove('hidden'); document.getElementById('eventModal').classList.add('flex'); }
+        function closeEventModal() { document.getElementById('eventModal').classList.add('hidden'); }
+
+        function submitEventForm(e) {
+            e.preventDefault();
+            const name = document.getElementById('evtName').value;
+            const date = document.getElementById('evtDate').value;
+            const time = document.getElementById('evtTime').value;
+            const location = document.getElementById('evtLocation').value;
+
+            mockEvents.unshift({
+                id: mockEvents.length + 1,
+                name: name,
+                date: date,
+                time: time,
+                location: location
+            });
+
+            closeEventModal();
+            Swal.fire({
+                icon: 'success',
+                title: 'Agenda Ditambahkan!',
+                confirmButtonColor: '#0ea5e9'
+            });
+            renderEvents();
+        }
+
+        function renderGalleries() {
+            const grid = document.getElementById('galleryGrid');
+            grid.innerHTML = '';
+
+            mockGalleries.forEach(g => {
+                const card = document.createElement('div');
+                card.className = "bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl hover:scale-[1.01] transition duration-300";
+                card.innerHTML = `
+                    <img src="${g.url}" alt="Dokumentasi" class="w-full h-48 object-cover">
+                    <div class="p-5">
+                        <p class="text-xs text-slate-300 font-semibold line-clamp-2">${g.caption}</p>
+                        <div class="mt-4 flex justify-between items-center text-[10px] text-slate-500">
+                            <span>SD Harapan Bangsa</span>
+                            <span>Sertifikat Digital</span>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function openGalleryModal() { document.getElementById('galleryModal').classList.remove('hidden'); document.getElementById('galleryModal').classList.add('flex'); }
+        function closeGalleryModal() { document.getElementById('galleryModal').classList.add('hidden'); }
+
+        function submitGalleryForm(e) {
+            e.preventDefault();
+            const caption = document.getElementById('galCaption').value;
+
+            mockGalleries.unshift({
+                id: mockGalleries.length + 1,
+                caption: caption,
+                url: 'https://placehold.co/600x400/0f172a/0ea5e9?text=Dokumentasi+Baru'
+            });
+
+            closeGalleryModal();
+            Swal.fire({
+                icon: 'success',
+                title: 'Foto Terunggah!',
+                confirmButtonColor: '#0ea5e9'
+            });
+            renderGalleries();
+        }
+
+        function renderPolls() {
+            const container = document.getElementById('pollingContainer');
+            container.innerHTML = '';
+
+            mockPolls.forEach(p => {
+                const total = p.votesA + p.votesB;
+                const pctA = total > 0 ? Math.round((p.votesA / total) * 100) : 0;
+                const pctB = total > 0 ? Math.round((p.votesB / total) * 100) : 0;
+
+                const card = document.createElement('div');
+                card.className = "p-6 bg-slate-900 border border-slate-800 rounded-3xl shadow-xl space-y-4";
+                card.innerHTML = `
+                    <div class="flex items-center gap-2 text-amber-400 text-xs font-bold uppercase tracking-wider">
+                        <i class="fa-solid fa-box-tissue animate-pulse"></i>
+                        <span>Polling Komunitas Aktif</span>
+                    </div>
+                    <h4 class="text-md font-bold text-slate-100">${p.question}</h4>
+                    
+                    <div class="space-y-3">
+                        <div class="space-y-1">
+                            <button onclick="castVote(${p.id}, 'A')" ${p.hasVoted ? 'disabled' : ''} class="w-full p-3.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-xl text-left transition text-xs font-semibold text-slate-300 flex justify-between items-center">
+                                <span>${p.optionA}</span>
+                                <span class="text-primary-400">${p.votesA} Suara (${pctA}%)</span>
+                            </button>
+                            <div class="w-full bg-slate-950 h-1.5 rounded-full overflow-hidden">
+                                <div class="bg-primary-500 h-full transition-all duration-500" style="width: ${pctA}%"></div>
+                            </div>
+                        </div>
+                        <div class="space-y-1">
+                            <button onclick="castVote(${p.id}, 'B')" ${p.hasVoted ? 'disabled' : ''} class="w-full p-3.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-xl text-left transition text-xs font-semibold text-slate-300 flex justify-between items-center">
+                                <span>${p.optionB}</span>
+                                <span class="text-cyan-400">${p.votesB} Suara (${pctB}%)</span>
+                            </button>
+                            <div class="w-full bg-slate-950 h-1.5 rounded-full overflow-hidden">
+                                <div class="bg-cyan-500 h-full transition-all duration-500" style="width: ${pctB}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-[10px] text-slate-500 text-center mt-3">Total Suara Terkumpul: ${total}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function castVote(pollId, option) {
+            const index = mockPolls.findIndex(p => p.id === pollId);
+            if (index !== -1) {
+                if (mockPolls[index].hasVoted) return;
+
+                if (option === 'A') mockPolls[index].votesA++;
+                else mockPolls[index].votesB++;
+
+                mockPolls[index].hasVoted = true;
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Pilihan Tersimpan!',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                renderPolls();
+            }
+        }
+
+        function openCreatePollModal() { document.getElementById('createPollModal').classList.remove('hidden'); document.getElementById('createPollModal').classList.add('flex'); }
+        function closeCreatePollModal() { document.getElementById('createPollModal').classList.add('hidden'); }
+
+        function submitCreatePollForm(e) {
+            e.preventDefault();
+            const question = document.getElementById('pollQuestion').value;
+            const optA = document.getElementById('pollOptionA').value;
+            const optB = document.getElementById('pollOptionB').value;
+
+            mockPolls.unshift({
+                id: mockPolls.length + 1,
+                question: question,
+                optionA: optA,
+                optionB: optB,
+                votesA: 0,
+                votesB: 0,
+                hasVoted: false
+            });
+
+            closeCreatePollModal();
+            Swal.fire({
+                icon: 'success',
+                title: 'Polling Dimulai!',
+                confirmButtonColor: '#0ea5e9'
+            });
+            renderPolls();
+        }
+
+        function renderPermissions() {
+            const tbody = document.getElementById('permissionTableBody');
+            tbody.innerHTML = '';
+
+            mockPermissions.forEach(p => {
+                let badge = '';
+                if (p.status === 'DIVERIFIKASI') {
+                    badge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-950 text-emerald-400 border border-emerald-500/30">Diverifikasi Korlas</span>`;
+                } else {
+                    badge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-950 text-amber-400 border border-amber-500/30">Pending</span>`;
+                }
+
+                let verifAction = '-';
+                if (p.status === 'PENDING' && currentUser.role !== 'WALI MURID') {
+                    verifAction = `<button onclick="verifyPermission(${p.id})" class="px-2 py-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[10px] rounded-lg transition">Verifikasi</button>`;
+                }
+
+                const tr = document.createElement('tr');
+                tr.className = "border-b border-slate-800 hover:bg-slate-900/40 transition";
+                tr.innerHTML = `
+                    <td class="px-4 py-3 font-semibold text-slate-200">${p.name}</td>
+                    <td class="px-4 py-3"><span class="px-2 py-0.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 text-[10px]">${p.type}</span></td>
+                    <td class="px-4 py-3 text-slate-400 max-w-xs truncate">${p.desc}</td>
+                    <td class="px-4 py-3">${badge}</td>
+                    <td class="px-4 py-3 text-center">${verifAction}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function submitPermission(e) {
+            e.preventDefault();
+            const siswa = document.getElementById('permSiswa').value;
+            const tipe = document.getElementById('permTipe').value;
+            const alasan = document.getElementById('permAlasan').value;
+
+            mockPermissions.unshift({
+                id: mockPermissions.length + 1,
+                name: siswa,
+                type: tipe,
+                desc: alasan,
+                status: 'PENDING'
+            });
+
+            document.getElementById('permissionForm').reset();
+            Swal.fire({
+                icon: 'success',
+                title: 'Izin Diajukan!',
+                confirmButtonColor: '#0ea5e9'
+            });
+            renderPermissions();
+        }
+
+        function verifyPermission(id) {
+            const index = mockPermissions.findIndex(p => p.id === id);
+            if (index !== -1) {
+                mockPermissions[index].status = 'DIVERIFIKASI';
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Diverifikasi!',
+                    text: 'Absensi siswa berhasil divalidasi oleh Korlas.',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                renderPermissions();
+            }
+        }
+
+        function saveGasUrl() {
+            const url = document.getElementById('gasUrlInput').value.trim();
+            if (url.startsWith('https://script.google.com/')) {
+                GAS_URL = url;
+                localStorage.setItem('gas_api_url', url);
+                updateNetworkStatusUI();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'API Terhubung!',
+                    text: 'Aplikasi sekarang tersambung secara live ke Google Sheets DB.',
+                    confirmButtonColor: '#0ea5e9'
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Format URL Salah',
+                    text: 'Pastikan URL berformat Web App Apps Script resmi.',
+                    confirmButtonColor: '#0ea5e9'
+                });
+            }
+        }
+
+        function resetToDemo() {
+            GAS_URL = '';
+            localStorage.removeItem('gas_api_url');
+            document.getElementById('gasUrlInput').value = '';
+            updateNetworkStatusUI();
+            Swal.fire({
+                icon: 'info',
+                title: 'Kembali Ke Demo',
+                text: 'Aplikasi kembali menggunakan mock database lokal untuk demo mandiri.',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        }
+
+        function updateNetworkStatusUI() {
+            const badge = document.getElementById('connectionStatusBadge');
+            if (GAS_URL) {
+                badge.innerText = "Live Cloud Active";
+                badge.className = "px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/20";
+            } else {
+                badge.innerText = "Demo Sandbox Mode";
+                badge.className = "px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-400 font-bold border border-amber-500/20";
+            }
+        }
+
+        function simulateNotification(gateway, msg) {
+            const toast = document.createElement('div');
+            toast.className = "fixed bottom-4 right-4 bg-slate-900 border border-primary-500 p-4 rounded-2xl shadow-2xl max-w-sm z-50 animate-bounce";
+            toast.innerHTML = `
+                <div class="flex items-center gap-2 text-primary-400 text-xs font-bold mb-1">
+                    <i class="fa-solid fa-bell"></i>
+                    <span>SIMULATION LOG: ${gateway}</span>
+                </div>
+                <p class="text-[11px] text-slate-300 font-mono whitespace-pre-wrap">${msg}</p>
+            `;
+            document.body.appendChild(toast);
+            setTimeout(() => { toast.remove(); }, 8000);
+        }
+
+        function renderLedger() {
+            const tbody = document.getElementById('ledgerTableBody');
+            tbody.innerHTML = '';
+
+            let sumIn = 0;
+            let sumOut = 0;
+
+            mockTransactions.forEach(t => {
+                if (t.status === 'VERIFIED') {
+                    if (t.type === 'MASUK') sumIn += t.amount;
+                    else sumOut += t.amount;
+                }
+
+                let badge = t.status === 'VERIFIED' 
+                    ? `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-950 text-emerald-400 border border-emerald-500/30">Terverifikasi</span>`
+                    : `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-950 text-amber-400 border border-amber-500/30">Menunggu</span>`;
+
+                let actionBtn = '-';
+                if (t.status === 'PENDING' && currentUser.role !== 'WALI MURID') {
+                    actionBtn = `
+                        <button onclick="approveTransaction(${t.id})" class="px-2 py-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[10px] rounded-lg transition mr-1">Approve</button>
+                        <button onclick="rejectTransaction(${t.id})" class="px-2 py-1 bg-rose-950 text-rose-400 font-bold text-[10px] rounded-lg hover:bg-rose-900 transition">Tolak</button>
+                    `;
+                }
+
+                const tr = document.createElement('tr');
+                tr.className = "border-b border-slate-800 hover:bg-slate-900/40 transition";
+                tr.innerHTML = `
+                    <td class="px-6 py-4 font-medium text-slate-300">${t.date}</td>
+                    <td class="px-6 py-4"><span class="px-2 py-0.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 text-[11px]">${t.category}</span></td>
+                    <td class="px-6 py-4 text-slate-200 font-semibold">${t.desc}</td>
+                    <td class="px-6 py-4 font-bold ${t.type === 'MASUK' ? 'text-emerald-400' : 'text-rose-400'}">${t.type}</td>
+                    <td class="px-6 py-4 text-right font-extrabold text-slate-100">Rp ${t.amount.toLocaleString('id-ID')}</td>
+                    <td class="px-6 py-4 text-center">${badge}</td>
+                    <td class="px-6 py-4 text-center">${actionBtn}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            const finalBalance = sumIn - sumOut;
+            document.getElementById('financialBalance').innerText = `Rp ${finalBalance.toLocaleString('id-ID')}`;
+        }
+
+        function filterTransactions() {
+            const category = document.getElementById('filterKategori').value;
+            if (category === "ALL") {
+                renderLedger();
+            } else {
+                const tbody = document.getElementById('ledgerTableBody');
+                tbody.innerHTML = '';
+                
+                const filtered = mockTransactions.filter(t => t.category === category);
+                filtered.forEach(t => {
+                    const tr = document.createElement('tr');
+                    tr.className = "border-b border-slate-800 hover:bg-slate-900/40 transition";
+                    tr.innerHTML = `
+                        <td class="px-6 py-4 font-medium text-slate-300">${t.date}</td>
+                        <td class="px-6 py-4"><span class="px-2 py-0.5 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 text-[11px]">${t.category}</span></td>
+                        <td class="px-6 py-4 text-slate-200 font-semibold">${t.desc}</td>
+                        <td class="px-6 py-4 font-bold ${t.type === 'MASUK' ? 'text-emerald-400' : 'text-rose-400'}">${t.type}</td>
+                        <td class="px-6 py-4 text-right font-extrabold text-slate-100">Rp ${t.amount.toLocaleString('id-ID')}</td>
+                        <td class="px-6 py-4 text-center"><span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-950 text-emerald-400 border border-emerald-500/30">${t.status}</span></td>
+                        <td class="px-6 py-4 text-center">-</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+        }
+
+        function renderDashboardContent() {
+            const metricsBox = document.getElementById('dashboardMetrics');
+            const pinnedBox = document.getElementById('pinnedAnnouncementBox');
+            const contextSection = document.getElementById('roleContextualSection');
+
+            let totalKelas = mockClasses.length;
+            let totalWali = mockUsers.filter(u => u.role === 'WALI MURID').length;
+            let kasKelas = "Rp 4.750.000";
+            let pendingApproval = mockTransactions.filter(t => t.status === 'PENDING').length;
+
+            if (currentUser.role === 'SUPER ADMIN') {
+                metricsBox.innerHTML = `
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex items-center justify-between">
+                        <div><p class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Total Sekolah</p><h3 class="text-2xl font-bold mt-1 text-slate-100">1</h3></div>
+                        <div class="w-12 h-12 rounded-2xl bg-primary-500/10 text-primary-400 flex items-center justify-center text-xl"><i class="fa-solid fa-school"></i></div>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex items-center justify-between">
+                        <div><p class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Total Kelas</p><h3 class="text-2xl font-bold mt-1 text-slate-100">${totalKelas}</h3></div>
+                        <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-xl"><i class="fa-solid fa-door-open"></i></div>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex items-center justify-between">
+                        <div><p class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Total Wali Murid</p><h3 class="text-2xl font-bold mt-1 text-slate-100">${totalWali}</h3></div>
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl"><i class="fa-solid fa-users"></i></div>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex items-center justify-between">
+                        <div><p class="text-xs text-slate-500 font-semibold uppercase tracking-wider">System Logs</p><h3 class="text-2xl font-bold mt-1 text-slate-100">99+</h3></div>
+                        <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center text-xl"><i class="fa-solid fa-terminal"></i></div>
+                    </div>
+                `;
+            } else if (currentUser.role === 'KOMITE') {
+                metricsBox.innerHTML = `
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex items-center justify-between">
+                        <div><p class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Total Kelas</p><h3 class="text-2xl font-bold mt-1 text-slate-100">${totalKelas} Kelas</h3></div>
+                        <div class="w-12 h-12 rounded-2xl bg-primary-500/10 text-primary-400 flex items-center justify-center text-xl"><i class="fa-solid fa-chalkboard-user"></i></div>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex items-center justify-between">
+                        <div><p class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Kas Komite</p><h3 class="text-2xl font-bold mt-1 text-emerald-400">Rp 56.400.000</h3></div>
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl"><i class="fa-solid fa-scale-balanced"></i></div>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex items-center justify-between">
+                        <div><p class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Tunggakan global</p><h3 class="text-2xl font-bold mt-1 text-rose-400">Rp 2.450.000</h3></div>
+                        <div class="w-12 h-12 rounded-2xl bg-rose-500/10 text-rose-400 flex items-center justify-center text-xl"><i class="fa-solid fa-circle-exclamation"></i></div>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex items-center justify-between">
+                        <div><p class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Audit Laporan</p><h3 class="text-2xl font-bold mt-1 text-cyan-400">100% Ok</h3></div>
+                        <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-xl"><i class="fa-solid fa-shield-halved"></i></div>
+                    </div>
+                `;
+            } else if (currentUser.role === 'KORLAS') {
+                metricsBox.innerHTML = `
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex items-center justify-between">
+                        <div><p class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Saldo Kas Kelas</p><h3 class="text-2xl font-bold mt-1 text-slate-100">${kasKelas}</h3></div>
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl"><i class="fa-solid fa-wallet"></i></div>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex items-center justify-between">
+                        <div><p class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Wali Murid Terdaftar</p><h3 class="text-2xl font-bold mt-1 text-slate-100">${totalWali} Wali</h3></div>
+                        <div class="w-12 h-12 rounded-2xl bg-primary-500/10 text-primary-400 flex items-center justify-center text-xl"><i class="fa-solid fa-user-group"></i></div>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex items-center justify-between">
+                        <div><p class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Pending Kas</p><h3 class="text-2xl font-bold mt-1 text-amber-500">${pendingApproval} Bukti</h3></div>
+                        <div class="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-xl"><i class="fa-solid fa-hourglass-half"></i></div>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex items-center justify-between">
+                        <div><p class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Sakit / Izin Hari Ini</p><h3 class="text-2xl font-bold mt-1 text-slate-100">1</h3></div>
+                        <div class="w-12 h-12 rounded-2xl bg-pink-500/10 text-pink-400 flex items-center justify-center text-xl"><i class="fa-solid fa-circle-minus"></i></div>
+                    </div>
+                `;
+            } else {
+                metricsBox.innerHTML = `
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex items-center justify-between">
+                        <div><p class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Anak Anda</p><h3 class="text-xl font-bold mt-1 text-slate-100">Keysha Az-Zahra</h3></div>
+                        <div class="w-12 h-12 rounded-2xl bg-primary-500/10 text-primary-400 flex items-center justify-center text-xl"><i class="fa-solid fa-user-graduate"></i></div>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex items-center justify-between">
+                        <div><p class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Kas Terkumpul Kelas</p><h3 class="text-2xl font-bold mt-1 text-slate-100">${kasKelas}</h3></div>
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl"><i class="fa-solid fa-wallet"></i></div>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex items-center justify-between">
+                        <div><p class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Iuran Aktif</p><h3 class="text-2xl font-bold mt-1 text-rose-400">Rp 50.000</h3></div>
+                        <div class="w-12 h-12 rounded-2xl bg-rose-500/10 text-rose-400 flex items-center justify-center text-xl"><i class="fa-solid fa-file-invoice"></i></div>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex items-center justify-between">
+                        <div><p class="text-xs text-slate-500 font-semibold uppercase tracking-wider">Voting Sedia</p><h3 class="text-2xl font-bold mt-1 text-amber-500">1</h3></div>
+                        <div class="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl"><i class="fa-solid fa-square-poll-horizontal"></i></div>
+                    </div>
+                `;
+            }
+
+            const pinned = mockAnnouncements.find(a => a.pinned);
+            if (pinned) {
+                pinnedBox.innerHTML = `
+                    <div class="p-4 rounded-2xl bg-slate-950/80 border border-primary-500/30 ring-1 ring-primary-500/20">
+                        <div class="flex items-center gap-2 text-primary-400 text-xs font-bold mb-2 uppercase">
+                            <i class="fa-solid fa-thumbtack animate-bounce"></i>
+                            <span>${pinned.category} PINNED ANNOUNCEMENT</span>
+                        </div>
+                        <h4 class="text-sm font-bold text-slate-200">${pinned.title}</h4>
+                        <p class="text-xs text-slate-400 mt-1 line-clamp-3">${pinned.body}</p>
+                        <button onclick="switchTab('announcements')" class="text-xs text-primary-400 font-bold hover:text-primary-300 mt-3 flex items-center gap-1">
+                            <span>Baca Selengkapnya</span>
+                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </button>
+                    </div>
+                `;
+            } else {
+                pinnedBox.innerHTML = `<p class="text-xs text-slate-500">Tidak ada pengumuman disematkan.</p>`;
+            }
+
+            if (currentUser.role === 'WALI MURID') {
+                contextSection.innerHTML = `
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                        <div>
+                            <span class="text-[10px] uppercase tracking-wider bg-rose-500/20 text-rose-400 font-bold px-2.5 py-1 rounded-full border border-rose-500/20">Konfirmasi Pembayaran</span>
+                            <h4 class="text-lg font-bold text-slate-100 mt-2">Iuran Kas Bulan Mei Belum Terkonfirmasi</h4>
+                            <p class="text-xs text-slate-400 mt-1">Selesaikan iuran kas bulanan Anda sebesar Rp 50.000 untuk menyelaraskan program sarana penunjang belajar mengajar kelas.</p>
+                        </div>
+                        <button onclick="openPaymentProofModal()" class="px-5 py-3 bg-gradient-to-r from-primary-600 to-cyan-600 text-white font-bold rounded-xl text-xs flex items-center gap-2 transition">
+                            <i class="fa-solid fa-receipt"></i>
+                            <span>Upload Bukti Sekarang</span>
+                        </button>
+                    </div>
+                `;
+            } else {
+                contextSection.innerHTML = `
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                        <div>
+                            <span class="text-[10px] uppercase tracking-wider bg-amber-500/20 text-amber-400 font-bold px-2.5 py-1 rounded-full border border-amber-500/20">Panel Keuangan & Pengguna</span>
+                            <h4 class="text-lg font-bold text-slate-100 mt-2">Kirim Rekap Tagihan & Laporan Kas Wali Murid</h4>
+                            <p class="text-xs text-slate-400 mt-1">Gunakan fitur kirim laporan personal untuk menagih tunggakan kas atau membagikan status pembayaran lunas wali murid via WhatsApp / Email.</p>
+                        </div>
+                        <button onclick="switchTab('financial')" class="px-5 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold rounded-xl text-xs flex items-center gap-2 transition hover:scale-[1.02]">
+                            <i class="fa-solid fa-list-check"></i>
+                            <span>Buka Laporan Keuangan</span>
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        let flowChartInstance = null;
+        function initCashflowChart() {
+            const ctx = document.getElementById('cashflowChart');
+            if (!ctx) return;
+            
+            if (flowChartInstance) {
+                flowChartInstance.destroy();
+            }
+
+            let months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei'];
+            let incoming = [1200000, 1400000, 1500000, 1100000, 1600000];
+            let outgoing = [400000, 300000, 800000, 200000, 415000];
+
+            flowChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: months,
+                    datasets: [
+                        {
+                            label: 'Pemasukan (Rp)',
+                            data: incoming,
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            fill: true,
+                            tension: 0.3
+                        },
+                        {
+                            label: 'Pengeluaran (Rp)',
+                            data: outgoing,
+                            borderColor: '#f43f5e',
+                            backgroundColor: 'rgba(244, 63, 94, 0.1)',
+                            fill: true,
+                            tension: 0.3
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { labels: { color: '#94a3b8' } } },
+                    scales: {
+                        y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } },
+                        x: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } }
+                    }
+                }
+            });
+        }
+
+        function openSchemaGuide() {
+            Swal.fire({
+                title: 'Struktur Google Sheets DB',
+                html: `<div class="text-left text-xs text-slate-300 space-y-2 font-mono bg-slate-950 p-4 rounded-xl max-h-60 overflow-y-auto">
+                    <strong>1. users:</strong> id, phone, pin, role, name, class_id, paidStatus, tunggakan, email<br>
+                    <strong>2. classes:</strong> id, name, desc<br>
+                    <strong>3. transactions:</strong> id, date, category, desc, type, amount, status, user_id<br>
+                    <strong>4. announcements:</strong> id, title, body, category, pinned, author<br>
+                    <strong>5. events:</strong> id, name, date, time, location<br>
+                    <strong>6. galleries:</strong> id, caption, url<br>
+                    <strong>7. voting:</strong> id, question, optionA, optionB, votesA, votesB<br>
+                    <strong>8. permissions:</strong> id, name, type, desc, status
+                </div>`,
+                confirmButtonColor: '#0ea5e9'
+            });
+        }
+
+        function openGasGuide() {
+            Swal.fire({
+                title: 'Kode Google Apps Script',
+                text: 'Buka panel petunjuk di editor/chat sebelah kiri untuk menyalin kode penuh Apps Script.',
+                icon: 'info',
+                confirmButtonColor: '#0ea5e9'
+            });
+        }
+
+        function openVercelGuide() {
+            Swal.fire({
+                title: 'Cara Deploy Frontend',
+                html: `<ol class="text-left text-xs text-slate-300 space-y-2 list-decimal p-4">
+                    <li>Buat Repositori baru di GitHub Anda dengan nama <code>iMersKORLAS</code>.</li>
+                    <li>Unggah file <code>index.html</code> ini ke dalam repositori tersebut.</li>
+                    <li>Buka <a href="https://vercel.com" target="_blank" class="text-primary-400 underline">vercel.com</a> dan buat proyek baru.</li>
+                    <li>Impor repositori GitHub tersebut, biarkan pengaturan default, lalu klik <strong>Deploy</strong>.</li>
+                    <li>Selesai! Frontend Anda kini online secara global dan gratis.</li>
+                </ol>`,
+                confirmButtonColor: '#0ea5e9'
+            });
+        }
+    </script>
+</body>
+</html>
